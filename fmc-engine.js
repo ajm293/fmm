@@ -25,8 +25,8 @@ function tokenise(input) {
         curr = input[index++];
         if (/\(|\)|\.|\[|\]|\;/.test(curr)) { // Separator characters
             tokenStream.push(curr);
-        } else if (/[a-z0-9]/i.test(curr)) { // Alphanumeric identifiers
-            while (/[a-z0-9]/i.test(curr)) {
+        } else if (/[a-z0-9]|_/i.test(curr)) { // Alphanumeric identifiers
+            while (/[a-z0-9]|_/i.test(curr)) {
                 tok += curr;
                 curr = input[index++];
             } 
@@ -34,7 +34,7 @@ function tokenise(input) {
             tok = '';
             index--;
         } else { // Non-alphanumeric cohesive features <, >, and ->
-            while (!(/[a-z0-9]/i.test(curr) || /\(|\)|\.|\[|\]|\;/.test(curr))) {
+            while (!(/[a-z0-9]|_/i.test(curr) || /\(|\)|\.|\[|\]|\;/.test(curr))) {
                 tok += curr;
                 curr = input[index++];
             }
