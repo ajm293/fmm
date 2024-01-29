@@ -24,24 +24,25 @@ function tokenise(input) {
     do {
         curr = input[index++];
         if (/\(|\)|\.|\[|\]|\;/.test(curr)) { // Separator characters
-            tokenStream.push(curr);
-        } else if (/[a-z0-9]|_/i.test(curr)) { // Alphanumeric identifiers
-            while (/[a-z0-9]|_/i.test(curr)) {
-                tok += curr;
-                curr = input[index++];
-            } 
-            tokenStream.push(tok);
-            tok = '';
-            index--;
-        } else { // Non-alphanumeric cohesive features <, >, and ->
-            while (!(/[a-z0-9]|_/i.test(curr) || /\(|\)|\.|\[|\]|\;/.test(curr))) {
-                tok += curr;
-                curr = input[index++];
+            if (tok != '') {
+                tokenStream.push(tok);
+                tok = '';
             }
-            tokenStream.push(tok);
-            tok = '';
-            index--;
+            tokenStream.push(curr);
+        } else if (/[a-z0-9]|_/ig.test(curr)) { // Alphanumeric identifiers
+            if (!(/[a-z0-9]|_/ig.test(tok)) && tok != '') {
+                tokenStream.push(tok);
+                tok = '';
+            }
+            tok += curr;
+        } else { // Non-alphanumeric cohesive features <, >, and ->
+            if (/[a-z0-9]|_/ig.test(tok) && tok != '') {
+                tokenStream.push(tok);
+                tok = '';
+            }
+            tok += curr;
         }
     } while (index < input.length)
+    if (tok != '') tokenStream.push(tok);
     return tokenStream;
 }
