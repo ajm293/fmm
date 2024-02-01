@@ -10,19 +10,23 @@ function parse(tokenStream) {
     "use strict";
     let input = tokenStream;
     let index = 0;
-    return parse();
-    function parse() {
-        let result = term();
-        return result;
-    }
+
+    let result = term();
+    return result;
+
     function term () {
         let sym = nextToken();
-        console.log(`Processing token ${sym} as term`);
+        console.log(`Processing token ${sym} in term()`);
         if (sym == '(') {
             // loopback and check
+            let t = term();
+            if (nextToken() == ')') {
+                return t;
+            }
         }
         if (sym == '[') {
             // push action
+            return pushAction();
         } else if (sym == '<') {
             // pop action on lambda stack
             return popAction("");
@@ -45,15 +49,25 @@ function parse(tokenStream) {
                 }
             }
         } else if (sym == '\0') {
-            console.log("We have reached the end");
             return variable("");
-        }
-        // How do we handle brackets?
+        } else error();
     }
     function pushAction() {
         // [TERM]loc.TERM
         // nextToken() should be the start of a TERM
-        
+        let n = term();
+        if (nextToken() == ']') {
+            let a = nextToken();
+            if (a == '.') {
+                // lambda stack push, note that we've consumed a dot
+                let m = term();
+                return new A('', n, m);
+            } else if (nextToken() == '.') {
+                // location stack push
+                let m = term();
+                return new A(a, n, m);
+            } else error();
+        }
     }
     function popAction(location) {
         // loc<var>.TERM
@@ -65,7 +79,7 @@ function parse(tokenStream) {
         if (rangle == '>' && dot == '.') {
             let m = term();
             return new L(a, x, m);
-        }
+        } else error();
     }
     function jumpAction() {
         // TERM ; jump -> TERM
@@ -94,7 +108,7 @@ function parse(tokenStream) {
         return input[index];
     }
     function error() {
-        console.error(`Error at token ${index}`);
+        console.error(`Error at token ${index} - "${input[index]}"`);
         throw new Error("Parsing error");
     }
 }
