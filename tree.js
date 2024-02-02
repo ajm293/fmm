@@ -1,3 +1,5 @@
+// Final Program AST classes
+
 class V { // variable (terminal)
     constructor(value) {
         this.value = value;
@@ -62,5 +64,36 @@ class R { // loop (recurse)
 
     toString() {
         return (`R(${this.term}, ${this.jmp})`);
+    }
+}
+
+// Helper AST classes for parsing as informed by Haskell implementation
+
+class P0 {
+
+}
+
+class A0 {
+
+}
+
+class A1 {
+    constructor(loc, term) {
+        this.loc = loc;
+        this.term = term;
+    }
+}
+
+class L0 {
+    constructor(loc, variable) {
+        this.loc = loc;
+        this.variable = variable;
+    }
+}
+
+class S1 {
+    constructor(term, jump) {
+        this.term = term;
+        this.jump = jump;
     }
 }
