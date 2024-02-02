@@ -16,7 +16,7 @@ class L { // pop action (lambda-abstraction)
     }
 
     toString() {
-        return (`L(${this.loc}, ${this.variable}, ${this.term})`)
+        return (`L(${this.loc}, ${this.variable}, ${this.term})`);
     }
 }
 
@@ -26,11 +26,19 @@ class A { // push action (application)
         this.pushTerm = pushTerm;
         this.term = term;
     }
+
+    toString() {
+        return (`A(${this.loc}, ${this.pushTerm}, ${this.term})`);
+    }
 }
 
 class J { // jump (terminal)
     constructor(value) {
         this.value = value;
+    }
+
+    toString() {
+        return (`J(${this.value})`);
     }
 }
 
@@ -40,11 +48,19 @@ class S { // jump action (sequence)
         this.jmp = jmp;
         this.rTerm = rTerm;
     }
+
+    toString() {
+        return (`S(${this.lTerm}, ${this.jmp}, ${this.rTerm})`);
+    }
 }
 
 class R { // loop (recurse)
     constructor(term, jmp) {
         this.term = term;
         this.jmp = jmp;
+    }
+
+    toString() {
+        return (`R(${this.term}, ${this.jmp})`);
     }
 }
