@@ -18,7 +18,9 @@ class L { // pop action (lambda-abstraction)
     }
 
     toString() {
-        return (`L(${this.loc}, ${this.variable}, ${this.term})`);
+        let loc = this.loc;
+        if (loc == '') loc = '*';
+        return (`L(${loc}, ${this.variable}, ${this.term})`);
     }
 }
 
@@ -30,7 +32,9 @@ class A { // push action (application)
     }
 
     toString() {
-        return (`A(${this.loc}, ${this.pushTerm}, ${this.term})`);
+        let loc = this.loc;
+        if (loc == '') loc == '*';
+        return (`A(${loc}, ${this.pushTerm}, ${this.term})`);
     }
 }
 
@@ -40,7 +44,9 @@ class J { // jump (terminal)
     }
 
     toString() {
-        return (`J(${this.value})`);
+        let value = this.value;
+        if (value == '') value == '*';
+        return (`J(${value})`);
     }
 }
 

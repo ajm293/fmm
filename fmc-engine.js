@@ -16,7 +16,6 @@ function parse(tokenStream) {
     return result;
 
     function down(trace) {
-        console.log("down", input[index], index, input.join(''));
         if (lookAhead() == '\0') {
             return up(trace, new J(""));
         }
@@ -59,7 +58,6 @@ function parse(tokenStream) {
     }
 
     function straight(trace) {
-        console.log("straight", input[index], index, input.join(''));
         let sym = lookAhead();
         if (sym == '\0') {
             return up(trace, new J(""), []);
@@ -80,7 +78,6 @@ function parse(tokenStream) {
     }
 
     function up(trace, m) {
-        console.log("up", input[index], index, trace);
         if (trace.length == 0 && lookAhead() == '\0') {
             return m;
         }
@@ -112,7 +109,6 @@ function parse(tokenStream) {
         if (sym == ';' && lookAhead(1) != '->') {
             return down([new S1(m, "")].concat(trace));
         }
-        console.log(sym);
         let sym2 = nextToken();
         if ((head instanceof A0) && (sym == ']') && (sym2 != '\0')) {
             trace.shift();
@@ -161,6 +157,35 @@ function run() {
 
 function init() {
     
+}
+
+function getLocations(term, locations = []) {
+    switch (true) {
+        case term instanceof L:
+            if (locations.indexOf(term.loc) === -1) locations.push(term.loc);
+            getLocations(term.term, locations);
+            break;
+        case term instanceof A:
+            if (locations.indexOf(term.loc) === -1) locations.push(term.loc);
+            getLocations(term.pushTerm, locations);
+            getLocations(term.term, locations);
+            break;
+        case term instanceof S:
+            getLocations(term.lTerm, locations)
+            getLocations(term.rTerm, locations);
+            break;
+        case term instanceof R:
+            getLocations(term.term, locations);
+            break;
+    }
+    return locations;
+}
+
+class Loc {
+    constructor(name) {
+        this.name = name;
+        this.stack = [];
+    }
 }
 
 function tokenise(input) {
