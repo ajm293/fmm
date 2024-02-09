@@ -3,9 +3,28 @@
 <html>
     <head>
         <title>The Functional Machine Simulator</title>
+        <style>
+            body {
+                background-color: #fff7e4;
+                color: black;
+                font-family: sans-serif;
+                margin: auto;
+                width: 1200px;
+                max-width: 95%;
+                border: 2px groove;
+                padding: 10px;
+                text-align: center;
+            }
+        </style>
     </head>
 
     <body>
+        <h1>FMC Demo</h1>
+
+        <input type="text" id="term" size="60">
+        <input type="button" id="parse" value="Parse"><br>
+        <textarea id="output" rows="4" cols="60"></textarea>
+
         <script src="tree.js"></script>
         <script src="fmc-engine.js"></script>
     </body>

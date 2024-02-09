@@ -1,3 +1,4 @@
+"use strict";
 const ex7 = "in<x>.in<y>.([y].[x].+ ; <p>.[p]out)";
 const ex5 = "[Divide]out.in<x>.[by]out.in<y>. ([y].[0].== ; <z>.z ; True -> Error ; False -> [y].[x]./ ; <z>.[z]out ; Error -> [Divide_by_zero]out)";
 
@@ -6,6 +7,11 @@ const alphanum = /[a-z0-9]|_/i;
 const digit = /^\d+$/;
 const varID = /[a-z]+$/;
 const jmpID = /[A-Z][A-Za-z]+$/;
+
+document.getElementById("parse").onclick = function () {
+    var term = document.getElementById("term").value;
+    document.getElementById("output").value = parse(tokenise(term)).toString();
+}
 
 function parse(tokenStream) {
     "use strict";
@@ -155,7 +161,7 @@ function run() {
 
 }
 
-function init() {
+function init(input) {
     
 }
 
@@ -194,7 +200,7 @@ function tokenise(input) {
     const tokenStream = [];
     let tok = '';
     do {
-        curr = input[index++];
+        const curr = input[index++];
         if (separator.test(curr)) { // Separator characters
             if (tok != '') {
                 tokenStream.push(tok);
