@@ -14,7 +14,6 @@ document.getElementById("parse").onclick = function () {
 }
 
 function parse(tokenStream) {
-    "use strict";
     let input = tokenStream;
     let index = 0;
 
@@ -185,6 +184,84 @@ function getLocations(term, locations = []) {
             break;
     }
     return locations;
+}
+
+function merge(x, y) {
+    return x.concat(y.filter((item) => x.indexOf(item) < 0));
+}
+
+function minus(x, y) {
+    return x.filter((item) => y.indexOf(item) < 0);
+}
+
+function free(term) {
+    switch (true) {
+        case term instanceof V:
+            return [term.value];
+        case term instanceof L:
+            return minus(free(term.term), [term.variable]);
+        case term instanceof A:
+            return merge(free(term.pushTerm), free(term.term));
+        case term instanceof J:
+            return [];
+        case term instanceof S:
+            return merge(free(term.lTerm), free(term.rTerm));
+        case term instanceof R:
+            return free(term.term);
+    }
+}
+
+function used(term) {
+    switch (true) {
+        case term instanceof V:
+            return [term.value];
+        case term instanceof L:
+            return merge(used(term.term), [term.variable]);
+        case term instanceof A:
+            return merge(used(term.pushTerm), used(term.term));
+        case term instanceof J:
+            return [];
+        case term instanceof S:
+            return merge(used(term.lTerm), used(term.rTerm));
+        case term instanceof R:
+            return used(term.term);
+    }
+}
+
+function fresh(usedVars) {
+    var freshVar = "x0";
+    var counter = 0;
+    while (usedVars.indexOf(freshVar) != -1) {
+        freshVar = "x" + counter++; 
+    }
+    return freshVar;
+}
+
+function sub(variable, p, q) {
+    switch (true) {
+        case q instanceof J:
+            return q;
+        case q instanceof V:
+            if (q.value == variable) {
+                return p;
+            } else return q;
+        case q instanceof S:
+            return new S(sub(variable, p, q.lTerm), q.jmp, sub(variable, p, q.rTerm));
+        case q instanceof R:
+            return new R(sub(variable, p, q.term), q.jmp);
+        case q instanceof A:
+            return new A(q.loc, sub(variable, p, q.pushTerm), sub(variable, p, q.term));
+        case q instanceof L:
+            if (q.variable == variable) {
+                return q;
+            } else if (free(p).indexOf(q.variable) != -1) {
+                // TODO: Implement fresh variables (De Bruijn indexing ideally)
+                var z = fresh(merge([variable], merge(used(p), used(q.term))));
+                return new L(q.loc, z, sub(variable, p, sub(q.variable, new V(z), q.term)));
+            } else {
+                return new L(q.loc, q.variable, sub(variable, p, q.term));
+            }
+    }
 }
 
 class Loc {
