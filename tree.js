@@ -19,7 +19,7 @@ class L { // pop action (lambda-abstraction)
 
     toString() {
         let loc = this.loc;
-        if (loc == '') loc = '*';
+        if (loc == '') loc = 'lambda';
         return (`L(${loc}, ${this.variable}, ${this.term})`);
     }
 }
@@ -33,7 +33,7 @@ class A { // push action (application)
 
     toString() {
         let loc = this.loc;
-        if (loc == '') loc == '*';
+        if (loc == '') loc = 'lambda';
         return (`A(${loc}, ${this.pushTerm}, ${this.term})`);
     }
 }

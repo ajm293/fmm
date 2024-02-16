@@ -2,6 +2,8 @@
 const ex7 = "in<x>.in<y>.([y].[x].+ ; <p>.[p]out)";
 const ex5 = "[Divide]out.in<x>.[by]out.in<y>. ([y].[0].== ; <z>.z ; True -> Error ; False -> [y].[x]./ ; <z>.[z]out ; Error -> [Divide_by_zero]out)";
 
+const NUM_RANGE = 10;
+
 const separator = /\(|\)|\.|\[|\]|\;/;
 const alphanum = /[a-z0-9]|_/i;
 const digit = /^\d+$/;
@@ -152,16 +154,91 @@ function parse(tokenStream) {
     }
 }
 
-function step() {
-
+function run(input) {
+    let state = init(input);
+    while (typeof state != "string") {
+        console.log(state.m.toString());
+        state = step(state);
+    }
 }
 
-function run() {
-
+function step(state) {
+    var m0 = state['m0'];
+    var m = state['m'];
+    var c = state['c'];
+    switch (true) {
+        case m instanceof A:
+            if (m.loc == 'out') {
+                console.log(m.pushTerm.toString() + " <<");
+                return {m0: m0, m: m.term, c: c};
+            } else {
+                m0[m.loc].stack.push(m.pushTerm);
+                return{m0: m0, m: m.term, c: c};
+            }
+        case m instanceof L:
+            if (m.loc == 'rnd') {
+                let rand = Math.floor(Math.random() * NUM_RANGE);
+                return {m0: m0, m: sub(m.variable, new J(rand), m.term), c: c};
+            } else if (m.loc == 'in') {
+                let userInput = prompt(">> ");
+                return {m0: m0, m: sub(m.variable, new J(userInput), m.term), c: c};
+            } else {
+                let popped = m0[m.loc].stack.pop();
+                if (typeof popped == "undefined") return "Error: empty pop at " + m.loc;
+                return {m0: m0, m: sub(m.variable, popped, m.term), c: c};
+            }
+        case m instanceof J:
+            if (c.length == 0) return "Exit with status " + m.value;
+            let topJmp = c.pop();
+            if (topJmp.jmp == m.value) return {m0: m0, m: topJmp.term, c};
+            return {m0: m0, m: m, c: c};
+        case m instanceof S:
+            c.push({jmp: m.jmp, term: m.rTerm});
+            return {m0: m0, m: m.lTerm, c: c};
+        case m instanceof R:
+            c.push({jmp: m.jmp, term: m});
+            return {m0: m0, m: m.term, c: c};
+        case m instanceof V:
+            let a = Number(m0[""].stack.pop().value);
+            let b = Number(m0[""].stack.pop().value);
+            switch (m.value) {
+                case "+":
+                    m0[""].stack.push(new J(a + b));
+                    return {m0: m0, m: new J(""), c};
+                case "-":
+                    m0[""].stack.push(new J(a - b));
+                    return {m0: m0, m: new J(""), c};
+                case "*":
+                    m0[""].stack.push(new J(a * b));
+                    return {m0: m0, m: new J(""), c};
+                case "/":
+                    m0[""].stack.push(new J(a / b));
+                    return {m0: m0, m: new J(""), c};
+                case "<=":
+                    m0[""].stack.push(new J(a <= b));
+                    return {m0: m0, m: new J(""), c};
+                case ">=":
+                    m0[""].stack.push(new J(a >= b));
+                    return {m0: m0, m: new J(""), c};
+                case "==":
+                    m0[""].stack.push(new J(a == b));
+                    return {m0: m0, m: new J(""), c};
+                default:
+                    return "Error: free variable " + m.value;
+            }
+    }
 }
 
 function init(input) {
-    
+    var term = parse(tokenise(input));
+    var locs = getLocations(term);
+    var locations = {};
+    for (let i = 0; i < locs.length; i++) {
+        locations[locs[i]] = new Loc(locs[i]);
+        locations[locs[i]].stack.push(new J(""));
+    }
+    var cont = [];
+    return {m0: locations, m: term, c: cont};
 }
 
 function getLocations(term, locations = []) {
