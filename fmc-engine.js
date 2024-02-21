@@ -2,7 +2,7 @@
 const ex7 = "in<x>.in<y>.([y].[x].+ ; <p>.[p]out)";
 const ex5 = "[Divide]out.in<x>.[by]out.in<y>. ([y].[0].== ; <z>.z ; True -> Error ; False -> [y].[x]./ ; <z>.[z]out ; Error -> [Divide_by_zero]out)";
 
-const NUM_RANGE = 10;
+const NUM_RANGE = 100;
 
 const separator = /\(|\)|\.|\[|\]|\;/;
 const alphanum = /[a-z0-9]|_/i;
@@ -87,9 +87,6 @@ function parse(tokenStream) {
 
     function straight(trace) {
         let sym = lookAhead();
-        if (sym == '\0') { // straight xs [] = up xs (J "") []
-            return up(trace, new J(""));
-        }
         if (sym == '.') { // straight xs (".":ys) = down xs ys
             nextToken();
             return down(trace);
@@ -103,6 +100,9 @@ function parse(tokenStream) {
         if (sym == ';') { // straight xs (";":ys) = up xs (J "") (";":ys)
             return up(trace, new J(""));
         }
+        if (sym == '\0') { // straight xs [] = up xs (J "") []
+            return up(trace, new J(""));
+        }
         else {
             throw new Error("Parsing error at index " + index);
         }
@@ -112,52 +112,68 @@ function parse(tokenStream) {
         if (trace.length == 0 && lookAhead() == '\0') { // up [] m [] = m
             return m;
         }
+
+        let head = trace[0];
+
+        if ((head instanceof P0) && (lookAhead() == ')')) { // up (P0:xs) m (")":ys) = up xs m ys
+            nextToken();
+            return up(trace.slice(1), m);
+        }
+
+        if ((head instanceof A0) && (lookAhead() == ']') && (lookAhead(1) == '\0')) { // up (A0:xs) m ("]":[]) = up xs (A "" m (J "")) []
+            nextToken();
+            return up(trace.slice(1), new A("", m, new J("")));
+        }
+
+        if ((head instanceof A0) && (lookAhead() == ']') && (lookAhead(1) != '\0')) { // up (A0:xs) m ("]":a:ys)
+            if (/[a-z]+$/.test(lookAhead(1))) { // | isloc a = straight (A1 a m:xs) ys
+                nextToken();
+                let sym2 = nextToken();
+                return straight([new A1(sym2, m)].concat(trace.slice(1)));
+            } else { // | otherwise = straight (A1 "" m:xs) (a:ys)
+                nextToken();
+                return straight([new A1("", m)].concat(trace.slice(1)));
+            }
+        }
+
         if (lookAhead() == '*') { // up xs m ("*":ys) = up xs (R m "") ys
             nextToken();
             return up(trace, new R(m, ""));
         }
+
         if (lookAhead() == '^' && lookAhead(1) != '\0') { // up xs m ("^":j:ys) = up xs (R m j) ys
             nextToken();
             let sym2 = nextToken();
             return up(trace, new R(m, sym2));
         }
-        let head = trace[0];
+
         if (head instanceof A1) { // up (A1 a n:xs) m ys = up xs (A a n m) ys
             return up(trace.slice(1), new A(head.loc, head.term, m));
         }
+
         if (head instanceof L0) { // up (L0 a x:xs) m ys = up xs (L a x m) ys
             return up(trace.slice(1), new L(head.loc, head.variable, m));
         }
+
         if (head instanceof S1) { // up (S1 n j:xs) m ys = up xs (S n j m) ys
             return up(trace.slice(1), new S(head.term, head.jump, m));
         }
+
         let sym = nextToken();
-        if ((head instanceof A0) && (sym == ']') && (lookAhead() == '\0')) { // up (A0:xs) m ("]":[]) = up xs (A "" m (J "")) []
-            return up(trace.slice(1), new A("", m, new J("")));
-        }
-        if ((head instanceof P0) && (sym == ')')) { // up (P0:xs) m (")":ys) = up xs m ys
-            return up(trace.slice(1), m);
-        }
-        
+
         if (sym == ';' && lookAhead(1) != '->') { // up xs m (";":ys) = down (S1 m "":xs) ys
             return down([new S1(m, "")].concat(trace));
         }
+
         let sym2 = nextToken();
-        if ((head instanceof A0) && (sym == ']') && (sym2 != '\0')) { // up (A0:xs) m ("]":a:ys)
-            if (/[a-z]+$/.test(sym2)) { // | isloc a = straight (A1 a m:xs) ys
-                return straight([new A1(sym2, m)].concat(trace.slice(1)));
-            } else { // | otherwise = straight (A1 "" m:xs) (a:ys)
-                index = index - 1;
-                return straight([new A1("", m)].concat(trace.slice(1)));
-            }
-        }
-        
+
         let sym3 = nextToken();
         if (sym == ';' && sym3 == '->') { // up xs m (";":j:"->":ys) = down (S1 m j :xs) ys
             return down([new S1(m, sym2)].concat(trace));
         }
+
         else {
-            throw new Error(`Parsing error at index ${index}`);
+            throw new Error(`Parsing error at index ${index}, character ${sym}`);
         }
     }
 
@@ -207,7 +223,7 @@ function step(state) {
                 return {m0: m0, m: sub(m.variable, new J(rand), m.term), c: c};
             } else if (m.loc == 'in') {
                 let userInput = prompt(">> ");
-                document.getElementById("putput").value += (`>> ${userInput}\n`);
+                document.getElementById("output").value += (`>> ${userInput}\n`);
                 return {m0: m0, m: sub(m.variable, new J(userInput), m.term), c: c};
             } else {
                 let popped = m0[m.loc].stack.pop();
@@ -396,6 +412,10 @@ function tokenise(input) {
             tok += curr;
         } else { // Non-alphanumeric cohesive features: operators, <, >, ^, and ->
             if (alphanum.test(tok) && tok != '') {
+                tokenStream.push(tok);
+                tok = '';
+            }
+            if (tok == "->" && curr == "<"){
                 tokenStream.push(tok);
                 tok = '';
             }
