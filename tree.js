@@ -19,7 +19,7 @@ class L { // pop action (lambda-abstraction)
 
     toString() {
         let loc = this.loc;
-        if (loc == '') loc = 'lambda';
+        if (loc === '') loc = 'lambda';
         return (`L(${loc}, ${this.variable}, ${this.term})`);
     }
 }
@@ -33,7 +33,7 @@ class A { // push action (application)
 
     toString() {
         let loc = this.loc;
-        if (loc == '') loc = 'lambda';
+        if (loc === '') loc = 'lambda';
         return (`A(${loc}, ${this.pushTerm}, ${this.term})`);
     }
 }
@@ -45,7 +45,7 @@ class J { // jump (terminal)
 
     toString() {
         let value = this.value;
-        if (value == '') value = '*';
+        if (value === '') value = '*';
         return (`J(${value})`);
     }
 }
@@ -59,7 +59,7 @@ class S { // jump action (sequence)
 
     toString() {
         let jmp = this.jmp;
-        if (jmp == '') jmp = '*'
+        if (jmp === '') jmp = '*'
         return (`S(${this.lTerm}, ${jmp}, ${this.rTerm})`);
     }
 }
@@ -72,7 +72,7 @@ class R { // loop (recurse)
 
     toString() {
         let jmp = this.jmp;
-        if (jmp == '') jmp = '*';
+        if (jmp === '') jmp = '*';
         return (`R(${this.term}, ${jmp})`);
     }
 }
