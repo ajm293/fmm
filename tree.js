@@ -45,7 +45,7 @@ class J { // jump (terminal)
 
     toString() {
         let value = this.value;
-        if (value == '') value == '*';
+        if (value == '') value = '*';
         return (`J(${value})`);
     }
 }
@@ -58,7 +58,9 @@ class S { // jump action (sequence)
     }
 
     toString() {
-        return (`S(${this.lTerm}, ${this.jmp}, ${this.rTerm})`);
+        let jmp = this.jmp;
+        if (jmp == '') jmp = '*'
+        return (`S(${this.lTerm}, ${jmp}, ${this.rTerm})`);
     }
 }
 
@@ -69,7 +71,9 @@ class R { // loop (recurse)
     }
 
     toString() {
-        return (`R(${this.term}, ${this.jmp})`);
+        let jmp = this.jmp;
+        if (jmp == '') jmp = '*';
+        return (`R(${this.term}, ${jmp})`);
     }
 }
 

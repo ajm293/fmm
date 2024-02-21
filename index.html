@@ -21,9 +21,13 @@
     <body>
         <h1>FMC Demo</h1>
 
-        <input type="text" id="term" size="60">
-        <input type="button" id="parse" value="Parse"><br>
-        <textarea id="output" rows="4" cols="60"></textarea>
+        <input type="text" id="term" size="60" placeholder="FMC term">
+        <input type="button" id="parse" value="Parse">
+        <input type="button" id="run" value="Run">
+        <input type="button" id="reset" value="Reset"><br>
+        <textarea id="parsed" rows="4" cols="66" placeholder="Parsed FMC term"></textarea><br>
+        <textarea id="console" rows="10" cols="66" placeholder="Program steps"></textarea><br>
+        <textarea id="output" rows="10" cols="66" placeholder="I/O"></textarea>
 
         <script src="tree.js"></script>
         <script src="fmc-engine.js"></script>

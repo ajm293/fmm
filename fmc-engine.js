@@ -12,7 +12,23 @@ const jmpID = /[A-Z][A-Za-z]+$/;
 
 document.getElementById("parse").onclick = function () {
     var term = document.getElementById("term").value;
-    document.getElementById("output").value = parse(tokenise(term)).toString();
+    document.getElementById("parsed").value = parse(tokenise(term)).toString();
+}
+
+document.getElementById("run").onclick = function () {
+    var term = document.getElementById("term").value;
+    document.getElementById("console").value = '';
+    document.getElementById("output").value = '';
+    run(term);
+    document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+    document.getElementById("output").scrollTop = document.getElementById("output").scrollHeight;
+}
+
+document.getElementById("reset").onclick = function () {
+    document.getElementById("term").value = '';
+    document.getElementById("parsed").value = '';
+    document.getElementById("console").value = '';
+    document.getElementById("output").value = '';
 }
 
 function parse(tokenStream) {
@@ -23,17 +39,17 @@ function parse(tokenStream) {
     return result;
 
     function down(trace) {
-        if (lookAhead() == '\0') {
+        if (lookAhead() == '\0') { // down xs [] = up xs (J "") []
             return up(trace, new J(""));
         }
         let sym = nextToken();
-        if (sym == '(') {
+        if (sym == '(') { // down xs ("(":ys) = down (P0:xs) ys
             return down([new P0()].concat(trace));
         }
-        if (sym == '[') {
+        if (sym == '[') { // down xs ("[":ys) = down (A0:xs) ys
             return down([new A0()].concat(trace));
         }
-        if (sym == '<') {
+        if (sym == '<') { // down xs ("<":x:">":ys) = straight (L0 "" x:xs) ys
             let x = nextToken();
             if (alphanum.test(x)) {
                 if (nextToken() == '>') {
@@ -42,7 +58,7 @@ function parse(tokenStream) {
             }
         }
         let l = lookAhead();
-        if (l == '<') {
+        if (l == '<') { // down xs (a:"<":x:">":ys) = straight (L0  a x:xs) ys
             nextToken();
             let x = nextToken();
             if (alphanum.test(x)) {
@@ -51,91 +67,91 @@ function parse(tokenStream) {
                 }
             }
         }
-        if ([')', ']', ';'].includes(sym)) {
-            tokenStream = [sym].concat(tokenStream);
-            index--;
+        if ([')', ']', ';'].includes(sym)) { // down xs (x:ys) | closing x = up xs (J "") (x:ys)
+            index = index - 1;
             return up(trace, new J(""));
         }
-        if (/[A-Z]/.test(sym) || digit.test(sym)) {
+        if (/[A-Z]/.test(sym) || digit.test(sym)) { // down xs (x:ys) | isjump  x = up xs (J x) ys
             return up(trace, new J(sym));
         }
-        else {
+        else { // down xs (x:ys) | otherwise = up xs (V x) ys
             return up(trace, new V(sym));
         }
     }
 
     function straight(trace) {
         let sym = lookAhead();
-        if (sym == '\0') {
-            return up(trace, new J(""), []);
+        if (sym == '\0') { // straight xs [] = up xs (J "") []
+            return up(trace, new J(""));
         }
-        if (sym == '.') {
+        if (sym == '.') { // straight xs (".":ys) = down xs ys
             nextToken();
             return down(trace);
         }
-        if (sym == ')') {
-            return up(trace, new J(""), [')'].concat(trace));
+        if (sym == ')') { // straight xs (")":ys) = up xs (J "") (")":ys)
+            return up(trace, new J(""));
         }
-        if (sym == ']') {
-            return up(trace, new J(""), [']'].concat(trace));
+        if (sym == ']') { // straight xs ("]":ys) = up xs (J "") ("]":ys)
+            return up(trace, new J(""));
         }
-        if (sym == ';') {
-            return up(trace, new J(""), [';'].concat(trace));
+        if (sym == ';') { // straight xs (";":ys) = up xs (J "") (";":ys)
+            return up(trace, new J(""));
+        }
+        else {
+            throw new Error("Parsing error at index " + index);
         }
     }
 
     function up(trace, m) {
-        if (trace.length == 0 && lookAhead() == '\0') {
+        if (trace.length == 0 && lookAhead() == '\0') { // up [] m [] = m
             return m;
         }
-        let head = trace[0];
-        if (head instanceof A1) {
-            trace.shift();
-            return up(trace, new A(head.loc, head.term, m));
-        }
-        if (head instanceof L0) {
-            trace.shift();
-            return up(trace, new L(head.loc, head.variable, m));
-        }
-        if (head instanceof S1) {
-            trace.shift();
-            return up(trace, new S(head.term, head.jump, m));
-        }
-        let sym = nextToken();
-        if ((head instanceof A0) && (sym == ']') && (lookAhead() == '\0')) {
-            trace.shift();
-            return up(trace, new A("", m, new J("")));
-        }
-        if ((head instanceof P0) && (sym == ')')) {
-            trace.shift();
-            return up(trace, m);
-        }
-        if (sym == '*') {
+        if (lookAhead() == '*') { // up xs m ("*":ys) = up xs (R m "") ys
+            nextToken();
             return up(trace, new R(m, ""));
         }
-        if (sym == ';' && lookAhead(1) != '->') {
+        if (lookAhead() == '^' && lookAhead(1) != '\0') { // up xs m ("^":j:ys) = up xs (R m j) ys
+            nextToken();
+            let sym2 = nextToken();
+            return up(trace, new R(m, sym2));
+        }
+        let head = trace[0];
+        if (head instanceof A1) { // up (A1 a n:xs) m ys = up xs (A a n m) ys
+            return up(trace.slice(1), new A(head.loc, head.term, m));
+        }
+        if (head instanceof L0) { // up (L0 a x:xs) m ys = up xs (L a x m) ys
+            return up(trace.slice(1), new L(head.loc, head.variable, m));
+        }
+        if (head instanceof S1) { // up (S1 n j:xs) m ys = up xs (S n j m) ys
+            return up(trace.slice(1), new S(head.term, head.jump, m));
+        }
+        let sym = nextToken();
+        if ((head instanceof A0) && (sym == ']') && (lookAhead() == '\0')) { // up (A0:xs) m ("]":[]) = up xs (A "" m (J "")) []
+            return up(trace.slice(1), new A("", m, new J("")));
+        }
+        if ((head instanceof P0) && (sym == ')')) { // up (P0:xs) m (")":ys) = up xs m ys
+            return up(trace.slice(1), m);
+        }
+        
+        if (sym == ';' && lookAhead(1) != '->') { // up xs m (";":ys) = down (S1 m "":xs) ys
             return down([new S1(m, "")].concat(trace));
         }
         let sym2 = nextToken();
-        if ((head instanceof A0) && (sym == ']') && (sym2 != '\0')) {
-            trace.shift();
-            if (/[a-z]+$/.test(sym2)) {
-                return straight([new A1(sym2, m)].concat(trace));
-            } else {
-                tokenStream = [sym2].concat(tokenStream);
-                index--;
-                return straight([new A1("", m)].concat(trace));
+        if ((head instanceof A0) && (sym == ']') && (sym2 != '\0')) { // up (A0:xs) m ("]":a:ys)
+            if (/[a-z]+$/.test(sym2)) { // | isloc a = straight (A1 a m:xs) ys
+                return straight([new A1(sym2, m)].concat(trace.slice(1)));
+            } else { // | otherwise = straight (A1 "" m:xs) (a:ys)
+                index = index - 1;
+                return straight([new A1("", m)].concat(trace.slice(1)));
             }
         }
-        if (sym == '^' && sym2 != '\0') {
-            return up(trace, new R(m, sym2));
-        }
+        
         let sym3 = nextToken();
-        if (sym == ';' && sym3 == '->') {
+        if (sym == ';' && sym3 == '->') { // up xs m (";":j:"->":ys) = down (S1 m j :xs) ys
             return down([new S1(m, sym2)].concat(trace));
         }
         else {
-            throw new Error("idk what happened but nothing matched");
+            throw new Error(`Parsing error at index ${index}`);
         }
     }
 
@@ -158,8 +174,11 @@ function run(input) {
     let state = init(input);
     while (typeof state != "string") {
         console.log(state.m.toString());
+        document.getElementById("console").value += (`${state.m.toString()}\n`);
         state = step(state);
     }
+    console.log(state);
+    document.getElementById("console").value += (`${state}\n`);
 }
 
 function step(state) {
@@ -169,7 +188,8 @@ function step(state) {
     switch (true) {
         case m instanceof A:
             if (m.loc == 'out') {
-                console.log(m.pushTerm.toString() + " <<");
+                console.log("<< " + m.pushTerm.toString());
+                document.getElementById("output").value += (`<< ${m.pushTerm.toString()}\n`);
                 return {m0: m0, m: m.term, c: c};
             } else {
                 m0[m.loc].stack.push(m.pushTerm);
@@ -181,6 +201,7 @@ function step(state) {
                 return {m0: m0, m: sub(m.variable, new J(rand), m.term), c: c};
             } else if (m.loc == 'in') {
                 let userInput = prompt(">> ");
+                document.getElementById("putput").value += (`>> ${userInput}\n`);
                 return {m0: m0, m: sub(m.variable, new J(userInput), m.term), c: c};
             } else {
                 let popped = m0[m.loc].stack.pop();
@@ -188,7 +209,7 @@ function step(state) {
                 return {m0: m0, m: sub(m.variable, popped, m.term), c: c};
             }
         case m instanceof J:
-            if (c.length == 0) return "Exit with status " + m.value;
+            if (c.length == 0) return "Exit with status " + (m.value == "" ? "*" : m.value);
             let topJmp = c.pop();
             if (topJmp.jmp == m.value) return {m0: m0, m: topJmp.term, c};
             return {m0: m0, m: m, c: c};
@@ -215,13 +236,13 @@ function step(state) {
                     m0[""].stack.push(new J(a / b));
                     return {m0: m0, m: new J(""), c};
                 case "<=":
-                    m0[""].stack.push(new J(a <= b));
+                    m0[""].stack.push(new J(String(a <= b)));
                     return {m0: m0, m: new J(""), c};
                 case ">=":
-                    m0[""].stack.push(new J(a >= b));
+                    m0[""].stack.push(new J(String(a >= b)));
                     return {m0: m0, m: new J(""), c};
                 case "==":
-                    m0[""].stack.push(new J(a == b));
+                    m0[""].stack.push(new J(String(a == b)));
                     return {m0: m0, m: new J(""), c};
                 default:
                     return "Error: free variable " + m.value;
