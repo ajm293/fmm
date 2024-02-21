@@ -10,26 +10,32 @@ const digit = /^\d+$/;
 const varID = /[a-z]+$/;
 const jmpID = /[A-Z][A-Za-z]+$/;
 
-document.getElementById("parse").onclick = function () {
-    var term = document.getElementById("term").value;
-    document.getElementById("parsed").value = parse(tokenise(term)).toString();
-}
+$(document).ready(function() {
+    $("#parsed").val('');
+    $("#console").val('');
+    $("#output").val('');
 
-document.getElementById("run").onclick = function () {
-    var term = document.getElementById("term").value;
-    document.getElementById("console").value = '';
-    document.getElementById("output").value = '';
-    run(term);
-    document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
-    document.getElementById("output").scrollTop = document.getElementById("output").scrollHeight;
-}
+    $("#parse").click(function () {
+        var term = $("#term").val();
+        $("#parsed").val(parse(tokenise(term)).toString());
+    });
 
-document.getElementById("reset").onclick = function () {
-    document.getElementById("term").value = '';
-    document.getElementById("parsed").value = '';
-    document.getElementById("console").value = '';
-    document.getElementById("output").value = '';
-}
+    $("#run").click(function () {
+        var term = $("#term").val();
+        $("#console").val('');
+        $("#output").val('');
+        run(term);
+        $("#console").scrollTop($("#console")[0].scrollHeight);
+        $("#output").scrollTop($("#output")[0].scrollHeight);
+    });
+
+    $("#reset").click(function () {
+        $("#term").val('');
+        $("#parsed").val('');
+        $("#console").val('');
+        $("#output").val('');
+    });
+});
 
 function parse(tokenStream) {
     let input = tokenStream;
