@@ -82,6 +82,7 @@ function parse(tokenStream) {
             return up(trace, new J(""));
         }
         else {
+            throwAlert("Parsing error at index " + index);
             throw new Error("Parsing error at index " + index);
         }
     }
@@ -151,7 +152,8 @@ function parse(tokenStream) {
         }
 
         else {
-            throw new Error(`Parsing error at index ${index}, character ${sym}`);
+            throwAlert("Parsing error at index " + index);
+            throw new Error(`Parsing error at index ${index}`);
         }
     }
 

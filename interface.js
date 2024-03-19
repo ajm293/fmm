@@ -13,7 +13,7 @@ $(document).ready(function () {
     $("#parse").click(function () {
         var term = $("#term").val();
         if (term === "") {
-            alert("FMC term is empty.");
+            throwAlert("FMC term is empty.");
             return;
         }
         $("#parsed").val(parse(tokenise(term)).toString());
@@ -22,7 +22,7 @@ $(document).ready(function () {
     $("#run").click(function () {
         var term = $("#term").val();
         if (term === "") {
-            alert("FMC term is empty.");
+            throwAlert("FMC term is empty.");
             return;
         }
         $("#console").val('');
@@ -37,7 +37,7 @@ $(document).ready(function () {
         if (typeof state === "undefined") {
             var term = $("#term").val();
             if (term === "") {
-                alert("FMC term is empty.");
+                throwAlert("FMC term is empty.");
                 return;
             }
             state = init(term);
@@ -76,6 +76,11 @@ $(document).ready(function () {
         $("#stacks").val('');
         state = undefined;
     });
+
+    $("#closealert").click(function () {
+        $("#haze").fadeOut();
+        $("#alert").fadeOut();
+    })
 });
 
 function showStacks(m0) {
@@ -89,4 +94,10 @@ function showStacks(m0) {
         output += `: ${m0[stack].stack}\n\n`
     }
     return output;
+}
+
+function throwAlert(text) {
+    $("#alert-text").html(text);
+    $("#haze").fadeIn(100);
+    $("#alert").fadeIn(100);
 }
