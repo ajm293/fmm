@@ -1,25 +1,45 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <title>The Functional Machine Simulator</title>
-        <link rel="stylesheet" type="text/css" href="style.css">
-    </head>
 
-    <body>
-        <h1>FMC Demo</h1>
+<head>
+    <title>The Functional Machine Simulator</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
 
+<body>
+    <header class="header">The Functional Machine Machine</header>
+    <hr>
+
+    <div class="pane-container">
+
+        <div class="pane" id="parse-pane">
+            <textarea id="parsed" placeholder="Parsed FMC term"></textarea>
+        </div>
+        <div class="pane" id="trace-pane">
+            <textarea id="console" placeholder="Program steps"></textarea>
+        </div>
+        <div class="pane" id="io-pane">
+            <textarea id="output" placeholder="I/O"></textarea>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div class="controls-container">
         <input type="text" id="term" size="60" placeholder="FMC term">
         <input type="button" id="parse" value="Parse">
         <input type="button" id="run" value="Run">
-        <input type="button" id="reset" value="Clear all"><br>
-        <textarea id="parsed" rows="4" cols="66" placeholder="Parsed FMC term"></textarea><br>
-        <textarea id="console" rows="10" cols="66" placeholder="Program steps"></textarea><br>
-        <textarea id="output" rows="10" cols="66" placeholder="I/O"></textarea>
+        <input type="button" id="step" value="Step">
+        <input type="button" id="reset" value="Clear all">
+    </div>
 
-        <script src="jquery-3.7.1.js"></script>
-        <script src="tree.js"></script>
-        <script src="fmc-engine.js"></script>
-        <script src="interface.js"></script>
-    </body>
+
+    <script src="jquery-3.7.1.js"></script>
+    <script src="tree.js"></script>
+    <script src="fmc-engine.js"></script>
+    <script src="interface.js"></script>
+</body>
+
 </html>

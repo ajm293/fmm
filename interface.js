@@ -1,5 +1,7 @@
 "use strict";
 $(document).ready(function() {
+
+    
     $("#parsed").val('');
     $("#console").val('');
     $("#output").val('');

@@ -169,7 +169,7 @@ function run(input) {
     let state = init(input);
     while (typeof state != "string") {
         console.log(state.m.toString());
-        document.getElementById("console").value += (`${state.m.toString()}\n`);
+        document.getElementById("console").value += (`${state.m.toString()}\n\n`);
         state = step(state);
     }
     console.log(state);
