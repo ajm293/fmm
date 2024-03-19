@@ -2,9 +2,9 @@
 
 var state;
 
-$(document).ready(function() {
+$(document).ready(function () {
 
-    
+
     $("#parsed").val('');
     $("#console").val('');
     $("#output").val('');
@@ -12,7 +12,7 @@ $(document).ready(function() {
 
     $("#parse").click(function () {
         var term = $("#term").val();
-        if (term ==="") {
+        if (term === "") {
             alert("FMC term is empty.");
             return;
         }
@@ -21,12 +21,13 @@ $(document).ready(function() {
 
     $("#run").click(function () {
         var term = $("#term").val();
-        if (term ==="") {
+        if (term === "") {
             alert("FMC term is empty.");
             return;
         }
         $("#console").val('');
         $("#output").val('');
+        $("#parsed").val(parse(tokenise(term)).toString());
         run(term);
         $("#console").scrollTop($("#console")[0].scrollHeight);
         $("#output").scrollTop($("#output")[0].scrollHeight);
@@ -40,13 +41,20 @@ $(document).ready(function() {
                 return;
             }
             state = init(term);
-            $("#console").val($("#console").val() + `${state.m.toString()}\n\n`);
+            $("#parsed").val(parse(tokenise(term)).toString());
+            $("#console").val(`${state.m.toString()}\n\n`);
+            $("#output").val('');
             $("#stacks").val(showStacks(state.m0));
             return;
         } else {
-            state = step(state);
-            $("#console").val($("#console").val() + `${state.m.toString()}\n\n`);
-            $("#stacks").val(showStacks(state.m0));
+                state = step(state);
+            if (typeof state === "string") {
+                $("#console").val($("#console").val() + `${state}\n\n`);
+                state = undefined;
+            } else {
+                $("#console").val($("#console").val() + `${state.m.toString()}\n\n`);
+                $("#stacks").val(showStacks(state.m0));
+            }
             $("#console").scrollTop($("#console")[0].scrollHeight);
             $("#output").scrollTop($("#output")[0].scrollHeight);
         }
@@ -57,6 +65,7 @@ $(document).ready(function() {
         $("#parsed").val('');
         $("#console").val('');
         $("#output").val('');
+        $("#stacks").val('');
         state = undefined;
     });
 
