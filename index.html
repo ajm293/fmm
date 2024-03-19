@@ -14,13 +14,16 @@
     <div class="pane-container">
 
         <div class="pane" id="parse-pane">
-            <textarea id="parsed" placeholder="Parsed FMC term"></textarea>
+            <textarea readonly id="parsed" placeholder="Parsed FMC term"></textarea>
         </div>
         <div class="pane" id="trace-pane">
-            <textarea id="console" placeholder="Program steps"></textarea>
+            <textarea readonly id="console" placeholder="Program steps"></textarea>
         </div>
         <div class="pane" id="io-pane">
-            <textarea id="output" placeholder="I/O"></textarea>
+            <textarea readonly id="output" placeholder="I/O"></textarea>
+        </div>
+        <div class="pane" id="stack-pane">
+            <textarea readonly id="stacks" placeholder="Stacks"></textarea>
         </div>
 
     </div>
@@ -28,11 +31,19 @@
     <hr>
 
     <div class="controls-container">
-        <input type="text" id="term" size="60" placeholder="FMC term">
-        <input type="button" id="parse" value="Parse">
-        <input type="button" id="run" value="Run">
-        <input type="button" id="step" value="Step">
-        <input type="button" id="reset" value="Clear all">
+
+            <textarea id="term" placeholder="FMC term"></textarea>
+
+            <input type="button" id="parse" value="Parse">
+
+            <input type="button" id="run" value="Run">
+
+            <input type="button" id="step" value="Step">
+
+            <input type="button" id="resetall" value="Clear all">
+
+            <input type="button" id="reset" value="Clear panes">
+
     </div>
 
 
