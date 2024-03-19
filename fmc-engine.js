@@ -396,5 +396,13 @@ function tokenise(input) {
         }
     } while (index < input.length)
     if (tok != '') tokenStream.push(tok);
+    return booleanConvert(tokenStream);
+}
+
+function booleanConvert(tokenStream) {
+    for (let i = 0; i < tokenStream.length; i++) {
+        if (tokenStream[i] === "False") tokenStream[i] = "false";
+        if (tokenStream[i] === "True") tokenStream[i] = "true";
+    }
     return tokenStream;
 }
