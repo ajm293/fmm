@@ -181,11 +181,11 @@ function parse(tokenStream) {
 function run(input) {
     let state = init(input);
     while (typeof state != "string") {
-        console.log(state.m.toString());
-        document.getElementById("console").value += (`${state.m.toString()}\n\n`);
+        //console.log(state.m.toString());
+        document.getElementById("console").value += (`${state.m.toTerm()}\n\n`);
         state = step(state);
     }
-    console.log(state);
+    //console.log(state);
     document.getElementById("console").value += (`${state}\n`);
 }
 
@@ -201,7 +201,7 @@ function step(state) {
     switch (true) {
         case m instanceof A:
             if (m.loc == 'out') {
-                console.log("<< " + m.pushTerm.toString());
+                //console.log("<< " + m.pushTerm.toString());
                 document.getElementById("output").value += (`<< ${m.pushTerm.toString()}\n`);
                 return {m0: m0, m: m.term, c: c};
             } else {

@@ -8,6 +8,7 @@ $(document).ready(function () {
     $("#parsed").val('');
     $("#console").val('');
     $("#output").val('');
+    $("#cont").val('');
     $("#stacks").val('');
 
     $("#parse").click(function () {
@@ -42,8 +43,11 @@ $(document).ready(function () {
             }
             state = init(term);
             $("#parsed").val(parse(tokenise(term)).toString());
-            $("#console").val(`${state.m.toString()}\n\n`);
+
+            $("#console").val(`${state.m.toTerm()}\n\n`);
             $("#output").val('');
+
+            $("#cont").val(showCont(state.c));
             $("#stacks").val(showStacks(state.m0));
             return;
         } else {
@@ -52,8 +56,9 @@ $(document).ready(function () {
                 $("#console").val($("#console").val() + `${state}\n\n`);
                 state = undefined;
             } else {
-                $("#console").val($("#console").val() + `${state.m.toString()}\n\n`);
+                $("#console").val($("#console").val() + `${state.m.toTerm()}\n\n`);
                 $("#stacks").val(showStacks(state.m0));
+                $("#cont").val(showCont(state.c));
             }
             $("#console").scrollTop($("#console")[0].scrollHeight);
             $("#output").scrollTop($("#output")[0].scrollHeight);
@@ -66,6 +71,7 @@ $(document).ready(function () {
         $("#console").val('');
         $("#output").val('');
         $("#stacks").val('');
+        $("#cont").val('');
         state = undefined;
     });
 
@@ -74,6 +80,7 @@ $(document).ready(function () {
         $("#console").val('');
         $("#output").val('');
         $("#stacks").val('');
+        $("#cont").val('');
         state = undefined;
     });
 
@@ -92,6 +99,15 @@ function showStacks(m0) {
             output += stack
         }
         output += `: ${m0[stack].stack}\n\n`
+    }
+    return output;
+}
+
+function showCont(c) {
+    output = "";
+    for (let cont in c) {
+        if (c[cont].jmp === '') output += `*`; else output += `${c[cont].jmp}`;
+        output += ` -> ${c[cont].term.toTerm()}\n\n`;
     }
     return output;
 }
