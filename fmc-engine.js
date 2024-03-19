@@ -10,6 +10,11 @@ const digit = /^\d+$/;
 const varID = /[a-z]+$/;
 const jmpID = /[A-Z][A-Za-z]+$/;
 
+/**
+ * Parses an FMC tokenStream into an FMC Term abstract syntax tree
+ * @param {[string]} tokenStream 
+ * @returns {Term} The corresponding FMC Term syntax tree
+ */
 function parse(tokenStream) {
     let input = tokenStream;
     let index = 0;
@@ -165,6 +170,12 @@ function parse(tokenStream) {
     }
 }
 
+/**
+ * Performs FMC machine steps on an input FMC term string
+ * until the term is completely evaluated, or until an
+ * error is encountered.
+ * @param {string} input 
+ */
 function run(input) {
     let state = init(input);
     while (typeof state != "string") {
@@ -176,6 +187,11 @@ function run(input) {
     document.getElementById("console").value += (`${state}\n`);
 }
 
+/**
+ * Performs one FMC machine step on the input state
+ * @param {State} state 
+ * @returns {State} The 1-stepped state
+ */
 function step(state) {
     var m0 = state['m0'];
     var m = state['m'];
@@ -245,6 +261,13 @@ function step(state) {
     }
 }
 
+/**
+ * Prepares an input FMC term string for execution, 
+ * returning a State object
+ * @param {string} input 
+ * @returns {State} Initial state consisting of location stacks, 
+ * initial term, and continuation stack
+ */
 function init(input) {
     var term = parse(tokenise(input));
     var locs = getLocations(term);
@@ -257,6 +280,13 @@ function init(input) {
     return {m0: locations, m: term, c: cont};
 }
 
+/**
+ * Returns an array of locations referenced in the term, 
+ * including the lambda-stack if used
+ * @param {Term} term 
+ * @param {*} locations 
+ * @returns {[string]} Locations used in term
+ */
 function getLocations(term, locations = []) {
     switch (true) {
         case term instanceof L:
@@ -279,14 +309,31 @@ function getLocations(term, locations = []) {
     return locations;
 }
 
+/**
+ * Returns an array the union of x and y
+ * @param {Array} x 
+ * @param {Array} y 
+ * @returns {Array} x U y in set operation semantics
+ */
 function merge(x, y) {
     return x.concat(y.filter((item) => x.indexOf(item) < 0));
 }
 
+/**
+ * Returns an array of the elements in x that are not in y
+ * @param {Array} x 
+ * @param {Array} y 
+ * @returns {Array} x-y in set operation semantics
+ */
 function minus(x, y) {
     return x.filter((item) => y.indexOf(item) < 0);
 }
 
+/**
+ * Returns the free variables in the input term
+ * @param {Term} term 
+ * @returns {[string]} Array of free variables
+ */
 function free(term) {
     switch (true) {
         case term instanceof V:
@@ -304,6 +351,11 @@ function free(term) {
     }
 }
 
+/**
+ * Returns an array of variables used in the input term
+ * @param {Term} term 
+ * @returns {[string]} Array of used variables
+ */
 function used(term) {
     switch (true) {
         case term instanceof V:
@@ -321,6 +373,12 @@ function used(term) {
     }
 }
 
+/**
+ * Returns a variable string that isn't in the usedVars array
+ * (Works similarly to De Brujin indexing)
+ * @param {[string]} usedVars 
+ * @returns {string} An unusued variable identifier string
+ */
 function fresh(usedVars) {
     var freshVar = "x0";
     var counter = 0;
@@ -330,6 +388,13 @@ function fresh(usedVars) {
     return freshVar;
 }
 
+/**
+ * Performs the capture-avoiding substitution q[p/variable]
+ * @param {string} variable 
+ * @param {Term} p 
+ * @param {Term} q 
+ * @returns {Term} The term q[p/variable]
+ */
 function sub(variable, p, q) {
     switch (true) {
         case q instanceof J:
@@ -364,6 +429,11 @@ class Loc {
     }
 }
 
+/**
+ * Tokenises an input FMC term string
+ * @param {string} input 
+ * @returns {[string]} token stream for parsing
+ */
 function tokenise(input) {
     input = input.split(/\s/).join("");
     let index = 0;
@@ -399,6 +469,13 @@ function tokenise(input) {
     return booleanConvert(tokenStream);
 }
 
+/**
+ * Converts "False" and "True" in a token stream into "false"
+ * and "true" for compatibility with FMC terms written for 
+ * the Haskell implementation
+ * @param {[string]} tokenStream 
+ * @returns {[string]} JS-friendly token stream
+ */
 function booleanConvert(tokenStream) {
     for (let i = 0; i < tokenStream.length; i++) {
         if (tokenStream[i] === "False") tokenStream[i] = "false";
