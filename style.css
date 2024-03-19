@@ -1,13 +1,27 @@
-body {
+html, body {
     background-color: #fff7e4;
     color: black;
     font-family: sans-serif;
     font-size: 100%;
     margin: auto;
-    max-width: 95%;
-    border: 2px groove;
-    padding: 10px;
+    max-width: 97%;
+    height: 95%;
+    padding: 0.5%;
     text-align: center;
+}
+
+.app-container {
+    display: flex;
+    flex-flow: row wrap;
+    height: 100%;
+    width: 100%;
+    align-items: auto;
+    align-content: start;
+}
+
+.app-container>* {
+    padding: 5px;
+    flex: 1 100%;
 }
 
 .header {
@@ -16,48 +30,78 @@ body {
     font-weight: bold;
 }
 
+footer {
+    font-family: 'Courier New', Courier, monospace;
+    text-align: left;
+    
+}
+
 .pane-container {
+    background: tomato;
     display: flex;
-    flex-flow: row wrap;
+    flex-direction: row;
     justify-content: center;
     align-items: auto;
     align-content: start;
+    height: 70%
+}
+
+.io-cont-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: auto;
+    align-content: start;
+    height: 100%
+}
+
+.io-cont-container>textarea {
+    height: 50%;
+    resize: none;
+    background: black;
+    color: lime;
+    font-weight: bold;
+    border-radius: 10px;
+    border: solid transparent;
 }
 
 .pane {
     flex: 1 0 auto;
     margin: 5px;
+    display: flex;
+    flex-direction: column;
 }
 
 .pane>textarea {
+    height:100%;
     resize: none;
-    width: 98%;
-    height: 60vh;
     background: black;
     color: lime;
     font-weight: bold;
     border-radius: 10px;
-    border: 5px solid transparent;
+    border: solid transparent;
 }
 
 .controls-container {
+    background: aqua;
     display: flex;
-    flex-flow: row wrap;
+    flex-direction: row;
     justify-content: center;
     align-items: auto;
     align-content: start;
-    margin: 5px;
+    margin: auto;
+    height: 20%
 }
 
 .controls-container>textarea {
     width: 40%;
-    height: 10vh;
     background: black;
     color: lime;
     font-weight: bold;
     border-radius: 5px;
-    border: 5px solid transparent;
-    margin: 5px
+    border: solid transparent;
+    margin: 0px 5px;
+    
 }
 
 .controls-container>input[type=button] {
@@ -65,7 +109,7 @@ body {
     font-weight: bold;
     font-size: 1.5em;
     padding: 5px 10px;
-    margin: 5px;
+    margin: 0px 5px;
     border: outset;
     border-radius: 5px;
 }

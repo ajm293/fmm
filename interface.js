@@ -47,7 +47,7 @@ $(document).ready(function () {
             $("#stacks").val(showStacks(state.m0));
             return;
         } else {
-                state = step(state);
+            state = step(state);
             if (typeof state === "string") {
                 $("#console").val($("#console").val() + `${state}\n\n`);
                 state = undefined;

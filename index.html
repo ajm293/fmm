@@ -8,29 +8,30 @@
 </head>
 
 <body>
-    <header class="header">The Functional Machine Machine</header>
-    <hr>
+    <div class="app-container">
+        <header class="header">FM<sup>2</sup>: The Functional Machine Machine</header>
 
-    <div class="pane-container">
+        <div class="pane-container">
 
-        <div class="pane" id="parse-pane">
-            <textarea readonly id="parsed" placeholder="Parsed FMC term"></textarea>
+            <div class="pane" id="parse-pane">
+                <textarea readonly id="parsed" placeholder="Parsed FMC term"></textarea>
+            </div>
+            <div class="pane" id="trace-pane">
+                <textarea readonly id="console" placeholder="Program steps"></textarea>
+            </div>
+            <div class="pane" id="io-pane">
+                <div class="io-cont-container">
+                    <textarea readonly id="output" placeholder="I/O"></textarea>
+                    <textarea readonly id="cont" placeholder="Continuation"></textarea>
+                </div>
+            </div>
+            <div class="pane" id="stack-pane">
+                <textarea readonly id="stacks" placeholder="Stacks"></textarea>
+            </div>
+
         </div>
-        <div class="pane" id="trace-pane">
-            <textarea readonly id="console" placeholder="Program steps"></textarea>
-        </div>
-        <div class="pane" id="io-pane">
-            <textarea readonly id="output" placeholder="I/O"></textarea>
-        </div>
-        <div class="pane" id="stack-pane">
-            <textarea readonly id="stacks" placeholder="Stacks"></textarea>
-        </div>
 
-    </div>
-
-    <hr>
-
-    <div class="controls-container">
+        <div class="controls-container">
 
             <textarea id="term" placeholder="FMC term"></textarea>
 
@@ -44,7 +45,10 @@
 
             <input type="button" id="reset" value="Clear panes">
 
+        </div>
     </div>
+    <hr>
+    <footer>The Functional Machine Machine is a Frog Language project | &#128056</footer>
 
 
     <script src="jquery-3.7.1.js"></script>
