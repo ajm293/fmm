@@ -8,6 +8,10 @@ class V { // variable (terminal)
     toString() {
         return (`V(${this.value})`);
     }
+
+    toTerm() {
+        return this.value;
+    }
 }
 
 class L { // pop action (lambda-abstraction)
@@ -22,6 +26,10 @@ class L { // pop action (lambda-abstraction)
         if (loc === '') loc = 'lambda';
         return (`L(${loc}, ${this.variable}, ${this.term})`);
     }
+
+    toTerm() {
+        return `${this.loc}<${this.variable}>.${this.term.toTerm()}`;
+    }
 }
 
 class A { // push action (application)
@@ -33,8 +41,12 @@ class A { // push action (application)
 
     toString() {
         let loc = this.loc;
-        if (loc === '') loc = 'lambda';
+        if (loc === '') loc = '\u03BB';
         return (`A(${loc}, ${this.pushTerm}, ${this.term})`);
+    }
+
+    toTerm() {
+        return `[${this.pushTerm.toTerm()}]${this.loc}.${this.term.toTerm()}`;
     }
 }
 
@@ -47,6 +59,11 @@ class J { // jump (terminal)
         let value = this.value;
         if (value === '') value = '*';
         return (`J(${value})`);
+    }
+
+    toTerm() {
+        if (this.value === '') return "*";
+        return this.value;
     }
 }
 
@@ -62,6 +79,11 @@ class S { // jump action (sequence)
         if (jmp === '') jmp = '*'
         return (`S(${this.lTerm}, ${jmp}, ${this.rTerm})`);
     }
+
+    toTerm() {
+        if (this.jmp === '') return `${this.lTerm.toTerm()};${this.rTerm.toTerm()}`;
+        return `${this.lTerm.toTerm()};${this.jmp}->${this.rTerm.toTerm()}`;
+    }
 }
 
 class R { // loop (recurse)
@@ -74,6 +96,11 @@ class R { // loop (recurse)
         let jmp = this.jmp;
         if (jmp === '') jmp = '*';
         return (`R(${this.term}, ${jmp})`);
+    }
+
+    toTerm() {
+        if (this.jmp === '') return `(${this.term.toTerm()})^*${this.jmp}`
+        return `(${this.term.toTerm()})^${this.jmp}`
     }
 }
 
