@@ -112,7 +112,20 @@ function showCont(c) {
     return output;
 }
 
-function throwAlert(text) {
+function throwAlert(text, style="warning") {
+    switch (style) {
+        case "warning":
+            $("#alert").css("background", "goldenrod");
+            break;
+        case "error":
+            $("#alert").css("background", "salmon");
+            break;
+        case "info":
+            $("#alert").css("background", "lightskyblue");
+            break;
+        default:
+            $("#alert").css("background", "palegreen");
+    }
     $("#alert-text").html(text);
     $("#haze").fadeIn(100);
     $("#alert").fadeIn(100);
