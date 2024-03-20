@@ -140,38 +140,52 @@ html, body {
     margin: auto;
     min-height: 10%;
     max-height: 20%;
+    max-width:  99%;
     padding: 10px;
 }
 
 .control {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
     display: flex;
     flex-flow: row wrap;
-    min-width: 40%;
-    max-width: 50%;
+    min-width:20%;
+    max-width:40%;
+    min-height:100%;
+    margin: 0px 10px 0px 0px;
 }
 
 .control>textarea {
-    width: 100%;
-    min-height: 89%;
-    max-height: 94%;
-    min-width: 98%;
+    box-sizing: border-box;
+    min-height: 100%;
+    max-height: 100%;
+    min-width: 100%;
     background: black;
     color: lime;
     font-weight: bold;
-    border-radius: 5px;
+    border-radius: 10px;
     border: solid transparent;
-    margin-right: 5px;
+    
 }
 
 .control>input[type=button] {
+    box-sizing: border-box;
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
     font-size: 1.5em;
     padding: 5px 10px;
-    margin: 0px 5px;
-    border: outset;
-    border-radius: 5px;
+    margin: 2px 5px;
+    border: solid;
+    border-radius: 10px;
+}
+
+.control>input[type=file] {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 1em;
+    padding: 5px 10px;
+    margin: 2px 5px;
+    border: solid;
+    border-radius: 10px;
 }
 
 .control>input[type=button]:hover {

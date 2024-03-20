@@ -72,6 +72,7 @@ $(document).ready(function () {
         $("#output").val('');
         $("#stacks").val('');
         $("#cont").val('');
+        $("#upload").val('');
         state = undefined;
     });
 
@@ -87,6 +88,18 @@ $(document).ready(function () {
     $("#closealert").click(function () {
         $("#haze").fadeOut();
         $("#alert").fadeOut();
+    });
+
+    $("#upload").on("change", function () {
+        let file = $("#upload")[0].files[0];
+        let reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = function() {
+            $("#term").val(reader.result);
+        };
+        reader.onerror = function() {
+            throwAlert("Unable to read file.", "error");
+        }
     })
 });
 
