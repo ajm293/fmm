@@ -22,7 +22,7 @@
                 <textarea readonly id="parsed" placeholder="Parsed FMC term"></textarea>
             </div>
             <div class="pane" id="trace-pane">
-                <textarea readonly id="console" placeholder="Program steps"></textarea>
+                <textarea readonly id="console" placeholder="Machine steps"></textarea>
             </div>
             <div class="pane" id="io-pane">
                 <div class="io-cont-container">
@@ -35,6 +35,7 @@
             </div>
 
         </div>
+        
 
         <div class="controls-container">
 
@@ -43,6 +44,8 @@
             </div>
 
             <div class="control">
+                <input type="button" id="load" value="Load">
+
                 <input type="button" id="parse" value="Parse">
 
                 <input type="button" id="run" value="Run">
@@ -58,8 +61,17 @@
 
         </div>
     </div>
-    <hr>
-    <footer>The Functional Machine Machine is a Frog-FMC project | &#128056</footer>
+    <div class="footer">
+        <footer>
+            <span style="text-align:left;width:50%;display:inline-block;">
+                The Functional Machine Machine is a Frog-FMC project | &#128056
+            </span>
+            <span style="text-align:right;width:49%;display:inline-block;">
+                <i>'Pushing to a location near you.'</i>
+            </span>
+        </footer>
+    </div>
+    
 
 
     <script src="jquery-3.7.1.js"></script>
