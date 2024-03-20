@@ -36,7 +36,7 @@ html, body {
     transform: translate(-50%, -50%);
 }
 
-#closealert {
+.closebutton {
     margin-left: 20px;
     color: black;
     font-weight: bold;
@@ -47,8 +47,23 @@ html, body {
     transition: 0.3s;
 }
 
-#closealert:hover {
+.closebutton:hover {
     color: white;
+}
+
+.options {
+    display: none;
+    color:black;
+    text-align: left;
+    font-family: 'Courier New', Courier, monospace;
+    background: lightblue;
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    border-radius: 10px;
+    transform: translate(-50%, -50%);
 }
 
 .app-container {
@@ -83,7 +98,7 @@ html, body {
 }
 
 .pane-container {
-    background: tomato;
+    /*background: tomato;*/
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -102,11 +117,14 @@ html, body {
     height: 100%
 }
 
+textarea {
+    background: black;
+    color: lime;
+}
+
 .io-cont-container>textarea {
     height: 50%;
     resize: none;
-    background: black;
-    color: lime;
     font-weight: bold;
     border-radius: 10px;
     border: solid transparent;
@@ -122,15 +140,13 @@ html, body {
 .pane>textarea {
     height:100%;
     resize: none;
-    background: black;
-    color: lime;
     font-weight: bold;
     border-radius: 10px;
     border: solid transparent;
 }
 
 .controls-container {
-    background: aqua;
+    /*background: aqua;*/
     display: flex;
     flex-flow: row nowrap;
     flex-grow: 3;
@@ -148,7 +164,6 @@ html, body {
     flex: 0 1 auto;
     display: flex;
     flex-flow: row wrap;
-    min-width:20%;
     max-width:40%;
     min-height:100%;
     margin: 0px 10px 0px 0px;
@@ -159,15 +174,14 @@ html, body {
     min-height: 100%;
     max-height: 100%;
     min-width: 100%;
-    background: black;
-    color: lime;
     font-weight: bold;
     border-radius: 10px;
     border: solid transparent;
     
 }
 
-.control>input[type=button] {
+input[type=button] {
+    background: rgb(240,240,240);
     box-sizing: border-box;
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
@@ -178,7 +192,7 @@ html, body {
     border-radius: 10px;
 }
 
-.control>input[type=file] {
+input[type=file] {
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
     font-size: 1em;
@@ -188,26 +202,26 @@ html, body {
     border-radius: 10px;
 }
 
-.control>input[type=button]:hover {
-    background: lightgray;
+input[type=button]:hover {
+    background: lightgray !important;
 }
 
-.control>input[type=button]:active {
-    background: silver;
+input[type=button]:active {
+    background: silver !important;
 }
 
 #resetall:hover {
-    background: lightpink;
+    background: lightpink !important;
 }
 
 #resetall:active {
-    background: lightcoral;
+    background: lightcoral !important;
 }
 
 #run:hover,#step:hover {
-    background: palegreen;
+    background: palegreen !important;
 }
 
 #run:active,#step:active {
-    background: springgreen;
+    background: springgreen !important;
 }

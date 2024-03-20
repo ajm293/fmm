@@ -10,6 +10,7 @@ $(document).ready(function () {
     $("#output").val('');
     $("#cont").val('');
     $("#stacks").val('');
+    $("#themeselect").val('classic');
 
     $("#parse").click(function () {
         var term = $("#term").val();
@@ -100,7 +101,19 @@ $(document).ready(function () {
         reader.onerror = function() {
             throwAlert("Unable to read file.", "error");
         }
-    })
+    });
+
+    $("#themeselect").on("change", function () {
+        changeTheme($("#themeselect").val());
+    });
+
+    $("#settings").click(function () {
+        $(".options").fadeIn(100);
+    });
+
+    $("#closeoptions").click(function () {
+        $(".options").fadeOut();
+    });
 });
 
 function showStacks(m0) {
@@ -142,4 +155,65 @@ function throwAlert(text, style="warning") {
     $("#alert-text").html(text);
     $("#haze").fadeIn(100);
     $("#alert").fadeIn(100);
+}
+
+function changeTheme(theme="classic") {
+    let fontColor;
+    let termColor;
+    let windowColor;
+    let bgColor;
+    let buttonColor;
+    let borderColor;
+    let btnFontColor;
+    switch (theme) {
+        case "classic":
+            fontColor = "black";
+            termColor = "lime";
+            windowColor = "black";
+            bgColor = "#FFF7E4";
+            buttonColor = "#F0F0F0";
+            borderColor = "black";
+            btnFontColor = "black";
+            break;
+        case "light":
+            fontColor = "black";
+            termColor = "blue";
+            windowColor = "#EAEAEA";
+            bgColor = "white";
+            buttonColor = "#F0F0F0";
+            borderColor = "black";
+            btnFontColor = "black";
+            break;
+        case "dark":
+            fontColor = "white";
+            termColor = "white";
+            windowColor = "#111111";
+            bgColor = "#333333"
+            buttonColor = "#555555";
+            borderColor = "#111111";
+            btnFontColor = "white";
+            break;
+        case "hotdog":
+            fontColor = "black";
+            termColor = "black";
+            windowColor = "yellow";
+            bgColor = "red";
+            buttonColor = "lightgray";
+            borderColor = "darkgray";
+            btnFontColor = "black";
+            break;
+        case "testing":
+            $(".pane-container").css("background-color", "tomato");
+            $(".controls-container").css("background-color", "aqua");
+            break;
+        default:
+            return;
+    }
+    $("body").css("color", fontColor);
+    $("textarea").css("color", termColor);
+    $("textarea").css("background-color", windowColor);
+    $("body,html").css("background-color", bgColor);
+    $("input[type=button]").css("background-color", buttonColor);
+    $("input[type=button]").css("color", btnFontColor);
+    $("input").css("border-color", borderColor);
 }
