@@ -202,7 +202,7 @@ function step(state) {
         case m instanceof A:
             if (m.loc == 'out') {
                 //console.log("<< " + m.pushTerm.toString());
-                document.getElementById("output").value += (`<< ${m.pushTerm.toString()}\n`);
+                document.getElementById("output").value += (`<< ${m.pushTerm.toTerm()}\n`);
                 return {m0: m0, m: m.term, c: c};
             } else {
                 m0[m.loc].stack.push(m.pushTerm);
