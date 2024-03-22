@@ -203,6 +203,7 @@ function step(state) {
             if (m.loc == 'out') {
                 //console.log("<< " + m.pushTerm.toString());
                 document.getElementById("output").value += (`<< ${m.pushTerm.toTerm()}\n`);
+                m0[m.loc].stack.push(m.pushTerm);
                 return {m0: m0, m: m.term, c: c};
             } else {
                 m0[m.loc].stack.push(m.pushTerm);
