@@ -5,8 +5,8 @@ class V { // variable (terminal)
         this.value = value;
     }
 
-    toString() {
-        return (`V(${this.value})`);
+    toString(indent=0) {
+        return (`${"  ".repeat(indent)}V(${this.value})`);
     }
 
     toTerm() {
@@ -21,10 +21,10 @@ class L { // pop action (lambda-abstraction)
         this.term = term;
     }
 
-    toString() {
+    toString(indent=0) {
         let loc = this.loc;
-        if (loc === '') loc = 'lambda';
-        return (`L(${loc}, ${this.variable}, ${this.term})`);
+        if (loc === '') loc = '\u03BB';
+        return (`${"  ".repeat(indent)}L(${loc}, ${this.variable},\n${this.term.toString(indent+1)})`);
     }
 
     toTerm() {
@@ -39,10 +39,10 @@ class A { // push action (application)
         this.term = term;
     }
 
-    toString() {
+    toString(indent=0) {
         let loc = this.loc;
         if (loc === '') loc = '\u03BB';
-        return (`A(${loc}, ${this.pushTerm}, ${this.term})`);
+        return (`${"  ".repeat(indent)}A(${loc},\n${this.pushTerm.toString(indent+1)},\n${this.term.toString(indent+1)})`);
     }
 
     toTerm() {
@@ -55,10 +55,10 @@ class J { // jump (terminal)
         this.value = value;
     }
 
-    toString() {
+    toString(indent=0) {
         let value = this.value;
         if (value === '') value = '*';
-        return (`J(${value})`);
+        return (`${"  ".repeat(indent)}J(${value})`);
     }
 
     toTerm() {
@@ -74,10 +74,12 @@ class S { // jump action (sequence)
         this.rTerm = rTerm;
     }
 
-    toString() {
+    toString(indent=0) {
         let jmp = this.jmp;
         if (jmp === '') jmp = '*'
-        return (`S(${this.lTerm}, ${jmp}, ${this.rTerm})`);
+        return (`${"  ".repeat(indent)}`
+        +`S(\n${this.lTerm.toString(indent+1)},\n`
+        +`${"  ".repeat(indent+1)}${jmp},\n${this.rTerm.toString(indent+1)})`);
     }
 
     toTerm() {
@@ -92,15 +94,16 @@ class R { // loop (recurse)
         this.jmp = jmp;
     }
 
-    toString() {
+    toString(indent=0) {
         let jmp = this.jmp;
         if (jmp === '') jmp = '*';
-        return (`R(${this.term}, ${jmp})`);
+        return (`${"  ".repeat(indent)}`
+        +`R(\n${this.term.toString(indent+1)},\n${"  ".repeat(indent+1)}${jmp})`);
     }
 
     toTerm() {
         if (this.jmp === '') return `(${this.term.toTerm()})^*${this.jmp}`
-        return `(${this.term.toTerm()})^${this.jmp}`
+        return `(${this.term.toTerm()})^${this.jmp}`;
     }
 }
 
