@@ -27,8 +27,11 @@ $(document).ready(function () {
             throwAlert("FMC term is empty.");
             return;
         }
+        state = undefined;
         $("#console").val('');
         $("#output").val('');
+        $("#cont").val('');
+        $("#stacks").val('');
         $("#parsed").val(parse(tokenise(term)).toString());
         run(term);
         $("#console").scrollTop($("#console")[0].scrollHeight);
@@ -194,7 +197,7 @@ function changeTheme(theme="classic") {
             btnFontColor = "white";
             break;
         case "hotdog":
-            fontColor = "black";
+            fontColor = "white";
             termColor = "black";
             windowColor = "yellow";
             bgColor = "red";
