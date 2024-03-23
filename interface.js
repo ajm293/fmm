@@ -168,6 +168,7 @@ function changeTheme(theme="classic") {
     let buttonColor;
     let borderColor;
     let btnFontColor;
+    let txtBorderColor;
     switch (theme) {
         case "classic":
             fontColor = "black";
@@ -177,6 +178,7 @@ function changeTheme(theme="classic") {
             buttonColor = "#F0F0F0";
             borderColor = "black";
             btnFontColor = "black";
+            txtBorderColor = "transparent";
             break;
         case "light":
             fontColor = "black";
@@ -186,6 +188,7 @@ function changeTheme(theme="classic") {
             buttonColor = "#F0F0F0";
             borderColor = "black";
             btnFontColor = "black";
+            txtBorderColor = "transparent";
             break;
         case "dark":
             fontColor = "white";
@@ -195,15 +198,17 @@ function changeTheme(theme="classic") {
             buttonColor = "#555555";
             borderColor = "#111111";
             btnFontColor = "white";
+            txtBorderColor = "transparent";
             break;
         case "hicontrast":
             fontColor = "white";
-            termColor = "black";
-            windowColor = "yellow";
+            termColor = "lime";
+            windowColor = "black";
             bgColor = "black";
             buttonColor = "black";
             borderColor = "aqua";
             btnFontColor = "white";
+            txtBorderColor = "aqua";
             break;
         case "testing":
             $(".pane-container").css("background-color", "tomato");
@@ -220,4 +225,5 @@ function changeTheme(theme="classic") {
     $("input[type=button]").css("color", btnFontColor);
     $("input").css("border-color", borderColor);
     $(".pane-container").css("border-bottom-color", borderColor);
+    $("textarea").css("border-color", txtBorderColor);
 }
