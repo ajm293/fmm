@@ -196,14 +196,14 @@ function changeTheme(theme="classic") {
             borderColor = "#111111";
             btnFontColor = "white";
             break;
-        case "hotdog":
+        case "hicontrast":
             fontColor = "white";
             termColor = "black";
             windowColor = "yellow";
-            bgColor = "red";
-            buttonColor = "lightgray";
-            borderColor = "darkgray";
-            btnFontColor = "black";
+            bgColor = "black";
+            buttonColor = "black";
+            borderColor = "aqua";
+            btnFontColor = "white";
             break;
         case "testing":
             $(".pane-container").css("background-color", "tomato");
@@ -219,4 +219,5 @@ function changeTheme(theme="classic") {
     $("input[type=button]").css("background-color", buttonColor);
     $("input[type=button]").css("color", btnFontColor);
     $("input").css("border-color", borderColor);
+    $(".pane-container").css("border-bottom-color", borderColor);
 }
