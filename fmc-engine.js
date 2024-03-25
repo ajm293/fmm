@@ -2,7 +2,7 @@
 const ex7 = "in<x>.in<y>.([y].[x].+ ; <p>.[p]out)";
 const ex5 = "[Divide]out.in<x>.[by]out.in<y>. ([y].[0].== ; <z>.z ; True -> Error ; False -> [y].[x]./ ; <z>.[z]out ; Error -> [Divide_by_zero]out)";
 
-const NUM_RANGE = 100;
+var NUM_RANGE = 100;
 
 const separator = /\(|\)|\.|\[|\]|\;/;
 const alphanum = /[a-z0-9]|_/i;

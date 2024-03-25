@@ -11,6 +11,7 @@ $(document).ready(function () {
     $("#cont").val('');
     $("#stacks").val('');
     $("#themeselect").val('classic');
+    $("#rngval").val(NUM_RANGE);
 
     $("#parse").click(function () {
         var term = $("#term").val();
@@ -117,6 +118,18 @@ $(document).ready(function () {
     $("#closeoptions").click(function () {
         $(".options").fadeOut();
     });
+
+    $("#rngval").on("change", function () {
+        let temp = NUM_RANGE;
+        let input = $("#rngval").val();
+        console.log(input);
+        if (input !== "") {
+            NUM_RANGE = input;
+        } else {
+            throwAlert("RNG range must be a number.", "error");
+            $("#rngval").val(NUM_RANGE);
+        }
+    })
 });
 
 function showStacks(m0) {
