@@ -99,10 +99,10 @@ $(document).ready(function () {
         let file = $("#upload")[0].files[0];
         let reader = new FileReader();
         reader.readAsText(file);
-        reader.onload = function() {
+        reader.onload = function () {
             $("#term").val(reader.result);
         };
-        reader.onerror = function() {
+        reader.onerror = function () {
             throwAlert("Unable to read file.", "error");
         }
     });
@@ -154,7 +154,7 @@ function showCont(c) {
     return output;
 }
 
-function throwAlert(text, style="warning") {
+function throwAlert(text, style = "warning") {
     switch (style) {
         case "warning":
             $("#alert").css("background", "goldenrod");
@@ -173,7 +173,7 @@ function throwAlert(text, style="warning") {
     $("#alert").fadeIn(100);
 }
 
-function changeTheme(theme="classic") {
+function changeTheme(theme = "classic") {
     let fontColor;
     let termColor;
     let windowColor;

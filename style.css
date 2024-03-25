@@ -1,6 +1,7 @@
 /* Global properties */
 
-html, body {
+html,
+body {
     background-color: #fff7e4;
     color: black;
     font-family: 'Courier New', Courier, monospace;
@@ -20,7 +21,7 @@ textarea {
 }
 
 input[type=button] {
-    background: rgb(240,240,240);
+    background: rgb(240, 240, 240);
     box-sizing: border-box;
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
@@ -61,7 +62,7 @@ input[type=button]:active {
     right: 0;
     bottom: 0;
     z-index: 1;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 #alert {
@@ -95,7 +96,7 @@ input[type=button]:active {
 
 .options {
     display: none;
-    color:black;
+    color: black;
     text-align: left;
     font-family: 'Courier New', Courier, monospace;
     background: lightblue;
@@ -129,13 +130,13 @@ input[type=button]:active {
 }
 
 .footer {
-    background:darkolivegreen;
-    color:white;
+    background: darkolivegreen;
+    color: white;
     font-family: 'Courier New', Courier, monospace;
     position: fixed;
-    left:0;
-    bottom:0;
-    padding:0.5% 2% 0.5% 2%;
+    left: 0;
+    bottom: 0;
+    padding: 0.5% 2% 0.5% 2%;
     width: 96%;
 }
 
@@ -174,7 +175,7 @@ input[type=button]:active {
 }
 
 .pane>textarea {
-    height:100%;
+    height: 100%;
     resize: none;
     font-weight: bold;
 }
@@ -189,7 +190,7 @@ input[type=button]:active {
     margin: auto;
     min-height: 10%;
     max-height: 20%;
-    max-width:  99%;
+    max-width: 99%;
     padding: 10px;
 }
 
@@ -197,8 +198,8 @@ input[type=button]:active {
     flex: 0 1 auto;
     display: flex;
     flex-flow: row wrap;
-    max-width:40%;
-    min-height:100%;
+    max-width: 40%;
+    min-height: 100%;
     margin: 0px 10px 0px 0px;
 }
 
@@ -208,7 +209,7 @@ input[type=button]:active {
     max-height: 100%;
     min-width: 100%;
     font-weight: bold;
-    
+
 }
 
 #resetall:hover {
@@ -219,10 +220,12 @@ input[type=button]:active {
     background: lightcoral !important;
 }
 
-#run:hover,#step:hover {
+#run:hover,
+#step:hover {
     background: palegreen !important;
 }
 
-#run:active,#step:active {
+#run:active,
+#step:active {
     background: springgreen !important;
 }
