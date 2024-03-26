@@ -33,7 +33,9 @@ $(document).ready(function () {
         $("#cont").val('');
         $("#stacks").val('');
         $("#parsed").val(parse(tokenise(term)).toString());
+        changeState("Running");
         run(term);
+        changeState("Idle");
         $("#console").scrollTop($("#console")[0].scrollHeight);
         $("#output").scrollTop($("#output")[0].scrollHeight);
     });
@@ -45,6 +47,7 @@ $(document).ready(function () {
                 throwAlert("FMC term is empty.");
                 return;
             }
+            changeState("Running");
             state = init(term);
             $("#parsed").val(parse(tokenise(term)).toString());
 
@@ -59,6 +62,7 @@ $(document).ready(function () {
             if (typeof state === "string") {
                 $("#console").val($("#console").val() + `${state}\n\n`);
                 state = undefined;
+                changeState("Idle");
             } else {
                 $("#console").val($("#console").val() + `${state.m.toTerm()}\n\n`);
                 $("#stacks").val(showStacks(state.m0));
@@ -78,6 +82,7 @@ $(document).ready(function () {
         $("#cont").val('');
         $("#upload").val('');
         state = undefined;
+        changeState("Idle");
     });
 
     $("#reset").click(function () {
@@ -87,6 +92,7 @@ $(document).ready(function () {
         $("#stacks").val('');
         $("#cont").val('');
         state = undefined;
+        changeState("Idle");
     });
 
     $("#closealert").click(function () {
@@ -248,4 +254,8 @@ function changeTheme(theme = "classic") {
     $("input").css("border-color", borderColor);
     $(".pane-container").css("border-bottom-color", borderColor);
     $("textarea").css("border-color", txtBorderColor);
+}
+
+function changeState(stateString) {
+    $("#running").html(stateString);
 }
