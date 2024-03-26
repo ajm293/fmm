@@ -9,6 +9,8 @@ const digit = /^\d+$/;
 const varID = /[a-z]+$/;
 const jmpID = /[A-Z][A-Za-z]+$/;
 
+const operators = ["+", "-", "*", "/", "<=", ">=", "=="];
+
 /**
  * Parses an FMC tokenStream into an FMC Term abstract syntax tree
  * @param {[string]} tokenStream 
@@ -233,33 +235,41 @@ function step(state) {
             c.push({ jmp: m.jmp, term: m });
             return { m0: m0, m: m.term, c: c };
         case m instanceof V:
-            let a = Number(m0[""].stack.pop().value);
-            let b = Number(m0[""].stack.pop().value);
-            switch (m.value) {
-                case "+":
-                    m0[""].stack.push(new J(a + b));
-                    return { m0: m0, m: new J(""), c };
-                case "-":
-                    m0[""].stack.push(new J(a - b));
-                    return { m0: m0, m: new J(""), c };
-                case "*":
-                    m0[""].stack.push(new J(a * b));
-                    return { m0: m0, m: new J(""), c };
-                case "/":
-                    m0[""].stack.push(new J(a / b));
-                    return { m0: m0, m: new J(""), c };
-                case "<=":
-                    m0[""].stack.push(new J(String(a <= b)));
-                    return { m0: m0, m: new J(""), c };
-                case ">=":
-                    m0[""].stack.push(new J(String(a >= b)));
-                    return { m0: m0, m: new J(""), c };
-                case "==":
-                    m0[""].stack.push(new J(String(a == b)));
-                    return { m0: m0, m: new J(""), c };
-                default:
-                    return "Error: free variable " + m.value;
+            if (!operators.includes(m.value)) {
+                return "Error: free variable " + m.value;
             }
+            try {
+                let a = Number(m0[""].stack.pop().value);
+                let b = Number(m0[""].stack.pop().value);
+                switch (m.value) {
+                    case "+":
+                        m0[""].stack.push(new J(a + b));
+                        return { m0: m0, m: new J(""), c };
+                    case "-":
+                        m0[""].stack.push(new J(a - b));
+                        return { m0: m0, m: new J(""), c };
+                    case "*":
+                        m0[""].stack.push(new J(a * b));
+                        return { m0: m0, m: new J(""), c };
+                    case "/":
+                        m0[""].stack.push(new J(a / b));
+                        return { m0: m0, m: new J(""), c };
+                    case "<=":
+                        m0[""].stack.push(new J(String(a <= b)));
+                        return { m0: m0, m: new J(""), c };
+                    case ">=":
+                        m0[""].stack.push(new J(String(a >= b)));
+                        return { m0: m0, m: new J(""), c };
+                    case "==":
+                        m0[""].stack.push(new J(String(a == b)));
+                        return { m0: m0, m: new J(""), c };
+                    default:
+                        return "Error: Unimplemented operator " + m.value;
+                }
+            } catch (e) {
+                return "Error: failed to pop two integers for operation";
+            }
+
     }
 }
 
