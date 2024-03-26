@@ -1,6 +1,5 @@
 "use strict";
-const ex7 = "in<x>.in<y>.([y].[x].+ ; <p>.[p]out)";
-const ex5 = "[Divide]out.in<x>.[by]out.in<y>. ([y].[0].== ; <z>.z ; True -> Error ; False -> [y].[x]./ ; <z>.[z]out ; Error -> [Divide_by_zero]out)";
+
 
 var NUM_RANGE = 100;
 
