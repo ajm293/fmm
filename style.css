@@ -74,7 +74,7 @@ input[type=button]:active {
     display: none;
     top: 50%;
     left: 50%;
-    z-index: 2;
+    z-index: 3;
     border-radius: 10px;
     transform: translate(-50%, -50%);
 }
@@ -107,6 +107,35 @@ input[type=button]:active {
     z-index: 1;
     border-radius: 10px;
     transform: translate(-50%, -50%);
+}
+
+.input-box {
+    display: none;
+    color: black;
+    text-align: left;
+    font-family: 'Courier New', Courier, monospace;
+    background: lightgreen;
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    border-radius: 10px;
+    transform: translate(-50%, -50%);
+}
+
+.input-box>input[type=text] {
+    border: solid transparent;
+    border-radius: 10px;
+    padding: 5px;
+    font-size: 1em;
+    width: 300px;
+}
+
+.input-box>input[type=button] {
+    font-size: 1em;
+    float: right;
+    margin: 10px 0px 0px 0px;
 }
 
 .app-container {

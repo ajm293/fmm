@@ -4,7 +4,6 @@ var state;
 
 $(document).ready(function () {
 
-
     $("#parsed").val('');
     $("#console").val('');
     $("#output").val('');
@@ -129,7 +128,11 @@ $(document).ready(function () {
             throwAlert("RNG range must be a number.", "error");
             $("#rngval").val(NUM_RANGE);
         }
-    })
+    });
+
+    $("#submit-input").click(function () {
+
+    });
 });
 
 function showStacks(m0) {
@@ -171,6 +174,12 @@ function throwAlert(text, style = "warning") {
     $("#alert-text").html(text);
     $("#haze").fadeIn(100);
     $("#alert").fadeIn(100);
+}
+
+function showInput() {
+    $("#input-text").val('');
+    $("#haze").fadeIn(100);
+    $(".input-box").fadeIn(100);
 }
 
 function changeTheme(theme = "classic") {
