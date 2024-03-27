@@ -177,7 +177,7 @@ function resetPanes() {
 }
 
 function updatePanes(s) {
-    if (waitingForInput == false) {
+    if (waitingForInput === false) {
         $("#console").val($("#console").val() + `${s.m.toTerm()}\n\n`);
     }
     $("#stacks").val(showStacks(s.m0));

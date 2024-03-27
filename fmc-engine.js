@@ -187,17 +187,22 @@ function run(input) {
     let state;
     if (inputReceived === false) {
         state = init(input);
+        updatePanes(state);
     } else {
         state = savedState;
     }
     running = true;
     while (typeof state != "string") {
-        //console.log(state.m.toString());
-        updatePanes(state);
-        state = step(state);
+        //console.log(state.m.toTerm());
         if (waitingForInput) {
+            console.log("breaking");
             return;
         }
+        state = step(state);
+        if (typeof state === "string") {
+            break;
+        }
+        updatePanes(state);
     }
     //console.log(state);
     document.getElementById("console").value += (`${state}\n`);
@@ -242,9 +247,6 @@ function step(state) {
                     inputReceived = false;
                     return newState;
                 }
-                let userInput = prompt(">> ");
-                document.getElementById("output").value += (`>> ${userInput}\n`);
-                return { m0: m0, m: sub(m.variable, new J(userInput), m.term), c: c };
             } else {
                 let popped = m0[m.loc].stack.pop();
                 if (typeof popped == "undefined") return "Error: empty pop at " + m.loc;
