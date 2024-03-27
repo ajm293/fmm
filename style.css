@@ -116,6 +116,22 @@ input[type=button]:active {
     transform: translate(-50%, -50%);
 }
 
+.help {
+    display: none;
+    color: black;
+    text-align: left;
+    font-family: 'Courier New', Courier, monospace;
+    background: lightblue;
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 0;
+    border-radius: 10px;
+    max-width: 30%;
+    transform: translate(-50%, -50%);
+}
+
 .input-box {
     display: none;
     color: black;

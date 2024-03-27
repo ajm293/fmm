@@ -84,6 +84,14 @@ $(document).ready(function () {
         $(".options").fadeOut();
     });
 
+    $("#help").click(function () {
+        $(".help").fadeIn(100);
+    })
+
+    $("#closehelp").click(function () {
+        $(".help").fadeOut();
+    });
+
     $("#rngval").on("change", function () {
         let temp = NUM_RANGE;
         let input = $("#rngval").val();
