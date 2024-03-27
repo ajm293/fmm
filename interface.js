@@ -177,7 +177,9 @@ function resetPanes() {
 }
 
 function updatePanes(s) {
-    $("#console").val($("#console").val() + `${s.m.toTerm()}\n\n`);
+    if (waitingForInput == false) {
+        $("#console").val($("#console").val() + `${s.m.toTerm()}\n\n`);
+    }
     $("#stacks").val(showStacks(s.m0));
     $("#cont").val(showCont(s.c));
     $("#console").scrollTop($("#console")[0].scrollHeight);
