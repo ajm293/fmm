@@ -3,6 +3,10 @@
 
 var NUM_RANGE = 100;
 
+var inputReceived = false;
+var waitingForInput = false;
+var savedState = undefined;
+
 const separator = /\(|\)|\.|\[|\]|\;/;
 const alphanum = /[a-z0-9]|_/i;
 const digit = /^\d+$/;
@@ -180,14 +184,24 @@ function parse(tokenStream) {
  * @param {string} input 
  */
 function run(input) {
-    let state = init(input);
+    let state;
+    if (inputReceived === false) {
+        state = init(input);
+    } else {
+        state = savedState;
+    }
+    running = true;
     while (typeof state != "string") {
         //console.log(state.m.toString());
         updatePanes(state);
         state = step(state);
+        if (waitingForInput) {
+            return;
+        }
     }
     //console.log(state);
     document.getElementById("console").value += (`${state}\n`);
+    running = false;
 }
 
 /**
@@ -215,6 +229,19 @@ function step(state) {
                 let rand = Math.floor(Math.random() * NUM_RANGE);
                 return { m0: m0, m: sub(m.variable, new J(rand), m.term), c: c };
             } else if (m.loc == 'in') {
+                if (inputReceived === false) {
+                    console.log("Breaking for input");
+                    waitingForInput = true;
+                    savedState = state;
+                    showInput();
+                    return { m0: m0, m: m, c: c }
+                } else {
+                    console.log("Returning for input " + inputReceived);
+                    let newState = { m0: m0, m: sub(m.variable, new J(inputReceived), m.term), c: c }
+                    waitingForInput = false;
+                    inputReceived = false;
+                    return newState;
+                }
                 let userInput = prompt(">> ");
                 document.getElementById("output").value += (`>> ${userInput}\n`);
                 return { m0: m0, m: sub(m.variable, new J(userInput), m.term), c: c };

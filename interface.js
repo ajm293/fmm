@@ -1,6 +1,8 @@
 "use strict";
 
 var state;
+var running = false;
+var stepping = false;
 
 $(document).ready(function () {
 
@@ -22,50 +24,11 @@ $(document).ready(function () {
     });
 
     $("#run").click(function () {
-        var term = $("#term").val();
-        if (term === "") {
-            throwAlert("FMC term is empty.");
-            return;
-        }
-        state = undefined;
-        $("#console").val('');
-        $("#output").val('');
-        $("#cont").val('');
-        $("#stacks").val('');
-        $("#parsed").val(parse(tokenise(term)).toString());
-        changeState("Running");
-        run(term);
-        changeState("Idle");
-        $("#console").scrollTop($("#console")[0].scrollHeight);
-        $("#output").scrollTop($("#output")[0].scrollHeight);
+        uiRun();
     });
 
     $("#step").click(function () {
-        if (typeof state === "undefined") {
-            var term = $("#term").val();
-            if (term === "") {
-                throwAlert("FMC term is empty.");
-                return;
-            }
-            state = init(term);
-            changeState("Running");
-            $("#parsed").val(parse(tokenise(term)).toString());
-            $("#console").val('');
-            $("#output").val('');
-
-            updatePanes(state);
-            return;
-        } else {
-            state = step(state);
-            if (typeof state === "string") {
-                $("#console").val($("#console").val() + `${state}\n\n`);
-                state = undefined;
-                changeState("Idle");
-            } else {
-                updatePanes(state);
-            }
-            
-        }
+        uiStep();
     });
 
     $("#resetall").click(function () {
@@ -73,12 +36,22 @@ $(document).ready(function () {
         $("#upload").val('');
         resetPanes();
         state = undefined;
+        running = false;
+        stepping = false;
+        waitingForInput = false;
+        inputReceived = false;
+        savedState = undefined;
         changeState("Idle");
     });
 
     $("#reset").click(function () {
         resetPanes();
         state = undefined;
+        running = false;
+        stepping = false;
+        waitingForInput = false;
+        inputReceived = false;
+        savedState = undefined;
         changeState("Idle");
     });
 
@@ -124,9 +97,76 @@ $(document).ready(function () {
     });
 
     $("#submit-input").click(function () {
-
+        $("#haze").hide();
+        $(".input-box").hide();
+        inputReceived = $("#input-text").val();
+        waitingForInput = false;
+        if (running) {
+            run();
+        } else if (stepping) {
+            state = savedState;
+            uiStep();
+        } else {
+            throwAlert("Inconsistent application state.", "error");
+            throw new Error("Inconsistent application state.");
+        }
     });
 });
+
+function uiStep() {
+    if (typeof state === "undefined") {
+        var term = $("#term").val();
+        if (term === "") {
+            throwAlert("FMC term is empty.");
+            return;
+        }
+        state = init(term);
+        changeState("Stepping");
+        stepping = true;
+        $("#parsed").val(parse(tokenise(term)).toString());
+        $("#console").val('');
+        $("#output").val('');
+
+        updatePanes(state);
+        return;
+    } else {
+        state = step(state);
+        if (typeof state === "string") {
+            $("#console").val($("#console").val() + `${state}\n\n`);
+            state = undefined;
+            changeState("Idle");
+            stepping = false;
+        } else {
+            updatePanes(state);
+        }
+        
+    }
+}
+
+function uiRun() {
+    var term = $("#term").val();
+    if (term === "") {
+        throwAlert("FMC term is empty.");
+        return;
+    }
+    state = undefined;
+    $("#console").val('');
+    $("#output").val('');
+    $("#cont").val('');
+    $("#stacks").val('');
+    $("#parsed").val(parse(tokenise(term)).toString());
+
+    changeState("Running");
+    running = true;
+    run(term);
+    changeState("Idle");
+    if (waitingForInput === false) {
+        running = false;
+    }
+
+    $("#console").scrollTop($("#console")[0].scrollHeight);
+    $("#output").scrollTop($("#output")[0].scrollHeight);
+}
 
 function resetPanes() {
     $("#parsed").val('');
@@ -189,6 +229,7 @@ function showInput() {
     $("#input-text").val('');
     $("#haze").fadeIn(100);
     $(".input-box").fadeIn(100);
+    $("#input-text").focus();
 }
 
 function changeTheme(theme = "classic") {
