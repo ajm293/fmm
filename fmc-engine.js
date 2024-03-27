@@ -183,7 +183,7 @@ function run(input) {
     let state = init(input);
     while (typeof state != "string") {
         //console.log(state.m.toString());
-        document.getElementById("console").value += (`${state.m.toTerm()}\n\n`);
+        updatePanes(state);
         state = step(state);
     }
     //console.log(state);

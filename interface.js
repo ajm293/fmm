@@ -47,15 +47,13 @@ $(document).ready(function () {
                 throwAlert("FMC term is empty.");
                 return;
             }
-            changeState("Running");
             state = init(term);
+            changeState("Running");
             $("#parsed").val(parse(tokenise(term)).toString());
-
-            $("#console").val(`${state.m.toTerm()}\n\n`);
+            $("#console").val('');
             $("#output").val('');
 
-            $("#cont").val(showCont(state.c));
-            $("#stacks").val(showStacks(state.m0));
+            updatePanes(state);
             return;
         } else {
             state = step(state);
@@ -64,33 +62,22 @@ $(document).ready(function () {
                 state = undefined;
                 changeState("Idle");
             } else {
-                $("#console").val($("#console").val() + `${state.m.toTerm()}\n\n`);
-                $("#stacks").val(showStacks(state.m0));
-                $("#cont").val(showCont(state.c));
+                updatePanes(state);
             }
-            $("#console").scrollTop($("#console")[0].scrollHeight);
-            $("#output").scrollTop($("#output")[0].scrollHeight);
+            
         }
     });
 
     $("#resetall").click(function () {
         $("#term").val('');
-        $("#parsed").val('');
-        $("#console").val('');
-        $("#output").val('');
-        $("#stacks").val('');
-        $("#cont").val('');
         $("#upload").val('');
+        resetPanes();
         state = undefined;
         changeState("Idle");
     });
 
     $("#reset").click(function () {
-        $("#parsed").val('');
-        $("#console").val('');
-        $("#output").val('');
-        $("#stacks").val('');
-        $("#cont").val('');
+        resetPanes();
         state = undefined;
         changeState("Idle");
     });
@@ -140,6 +127,22 @@ $(document).ready(function () {
 
     });
 });
+
+function resetPanes() {
+    $("#parsed").val('');
+    $("#console").val('');
+    $("#stacks").val('');
+    $("#cont").val('');
+    $("#output").val('');
+}
+
+function updatePanes(s) {
+    $("#console").val($("#console").val() + `${s.m.toTerm()}\n\n`);
+    $("#stacks").val(showStacks(s.m0));
+    $("#cont").val(showCont(s.c));
+    $("#console").scrollTop($("#console")[0].scrollHeight);
+    $("#output").scrollTop($("#output")[0].scrollHeight);
+}
 
 function showStacks(m0) {
     output = "";
