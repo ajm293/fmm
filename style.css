@@ -250,7 +250,7 @@ input[type=button]:active {
     flex: 0 1 auto;
     display: flex;
     flex-flow: row wrap;
-    max-width: 40%;
+    max-width: 30%;
     min-height: 100%;
     margin: 0px 10px 0px 0px;
 }
