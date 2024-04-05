@@ -92,6 +92,10 @@ $(document).ready(function () {
         $(".help").fadeOut();
     });
 
+    $("#closefooter").click(function () {
+        $(".footer").fadeOut();
+    })
+
     $("#rngval").on("change", function () {
         let temp = NUM_RANGE;
         let input = $("#rngval").val();
