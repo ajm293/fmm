@@ -185,6 +185,7 @@ input[type=button]:active {
     background: darkolivegreen;
     color: white;
     font-family: 'Courier New', Courier, monospace;
+    font-size: 90%;
     position: fixed;
     left: 0;
     bottom: 0;
