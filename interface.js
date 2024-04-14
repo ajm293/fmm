@@ -296,10 +296,6 @@ function changeTheme(theme = "classic") {
             btnFontColor = "white";
             txtBorderColor = "aqua";
             break;
-        case "testing":
-            $(".pane-container").css("background-color", "tomato");
-            $(".controls-container").css("background-color", "aqua");
-            break;
         default:
             return;
     }
