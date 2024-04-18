@@ -4,6 +4,10 @@ var state;
 var running = false;
 var stepping = false;
 
+/**
+ * Prepares UI elements for use and defines the UI functions.
+ * Runs on page load.
+ */
 $(document).ready(function () {
 
     $("#parsed").val('');
@@ -130,6 +134,9 @@ $(document).ready(function () {
     });
 });
 
+/**
+ * Wraps the engine step function for use within the interface.
+ */
 function uiStep() {
     if (typeof state === "undefined") {
         var term = $("#term").val();
@@ -160,6 +167,9 @@ function uiStep() {
     }
 }
 
+/**
+ * Wraps the engine run function for use in the interface.
+ */
 function uiRun() {
     var term = $("#term").val();
     if (term === "") {
@@ -185,6 +195,9 @@ function uiRun() {
     $("#output").scrollTop($("#output")[0].scrollHeight);
 }
 
+/**
+ * Clears the UI output windows
+ */
 function resetPanes() {
     $("#parsed").val('');
     $("#console").val('');
@@ -193,6 +206,10 @@ function resetPanes() {
     $("#output").val('');
 }
 
+/**
+ * Updates the UI output windows to the input state
+ * @param {State} s 
+ */
 function updatePanes(s) {
     if (waitingForInput === false) {
         $("#console").val($("#console").val() + `${s.m.toTerm()}\n\n`);
@@ -203,6 +220,11 @@ function updatePanes(s) {
     $("#output").scrollTop($("#output")[0].scrollHeight);
 }
 
+/**
+ * Generate a formatted string containing the contents of the location stacks
+ * @param {Object} m0 
+ * @returns The formatted stack contents string
+ */
 function showStacks(m0) {
     output = "";
     for (let stack in m0) {
@@ -216,6 +238,11 @@ function showStacks(m0) {
     return output;
 }
 
+/**
+ * Generate a formatted string containing the contents of the continuation stack
+ * @param {*} c 
+ * @returns The formatted continuation stack string
+ */
 function showCont(c) {
     output = "";
     for (let cont in c) {
@@ -225,6 +252,11 @@ function showCont(c) {
     return output;
 }
 
+/**
+ * Show a custom modal alert window to the user
+ * @param {*} text 
+ * @param {*} style 
+ */
 function throwAlert(text, style = "warning") {
     switch (style) {
         case "warning":
@@ -244,6 +276,9 @@ function throwAlert(text, style = "warning") {
     $("#alert").fadeIn(100);
 }
 
+/**
+ * Show the input window to the user
+ */
 function showInput() {
     $("#input-text").val('');
     $("#haze").fadeIn(100);
@@ -251,6 +286,10 @@ function showInput() {
     $("#input-text").focus();
 }
 
+/**
+ * Change the UI theme to the requested theme
+ * @param {*} theme 
+ */
 function changeTheme(theme = "classic") {
     let fontColor;
     let termColor;
@@ -315,6 +354,10 @@ function changeTheme(theme = "classic") {
     $("textarea").css("border-color", txtBorderColor);
 }
 
+/**
+ * Update the machine state indicator to the input string
+ * @param {*} stateString 
+ */
 function changeState(stateString) {
     $("#running").html(stateString);
 }
