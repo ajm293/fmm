@@ -13,6 +13,7 @@ $(document).ready(function () {
     $("#stacks").val('');
     $("#themeselect").val('classic');
     $("#rngval").val(NUM_RANGE);
+    $("#rngqueue").val(RNG_QUEUE);
 
     $("#parse").click(function () {
         var term = $("#term").val();
@@ -97,7 +98,6 @@ $(document).ready(function () {
     })
 
     $("#rngval").on("change", function () {
-        let temp = NUM_RANGE;
         let input = $("#rngval").val();
         console.log(input);
         if (input !== "") {
@@ -107,6 +107,11 @@ $(document).ready(function () {
             $("#rngval").val(NUM_RANGE);
         }
     });
+
+    $("#rngqueue").on("change", function () {
+        console.log($("#rngqueue").val());
+        RNG_QUEUE = $("#rngqueue").val();
+    })
 
     $("#submit-input").click(function () {
         $("#haze").hide();

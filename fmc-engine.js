@@ -2,6 +2,7 @@
 
 
 var NUM_RANGE = 100;
+var RNG_QUEUE = 5;
 
 var inputReceived = false;
 var waitingForInput = false;
@@ -231,7 +232,8 @@ function step(state) {
             }
         case m instanceof L:
             if (m.loc == 'rnd') {
-                let rand = Math.floor(Math.random() * NUM_RANGE);
+                m0['rnd'].stack.unshift(new J(Math.floor(Math.random() * NUM_RANGE)));
+                let rand = m0['rnd'].stack.pop();
                 return { m0: m0, m: sub(m.variable, new J(rand), m.term), c: c };
             } else if (m.loc == 'in') {
                 if (inputReceived === false) {
@@ -315,7 +317,14 @@ function init(input) {
     var locations = {};
     for (let i = 0; i < locs.length; i++) {
         locations[locs[i]] = new Loc(locs[i]);
-        locations[locs[i]].stack.push(new J(""));
+        if (locs[i] == "rnd") {
+            console.log(RNG_QUEUE);
+            for (let j = 0; j < RNG_QUEUE; j++) {
+                locations[locs[i]].stack.push(new J(Math.floor(Math.random() * NUM_RANGE)));
+            }
+        } else {
+            locations[locs[i]].stack.push(new J(""));
+        }
     }
     var cont = [];
     return { m0: locations, m: term, c: cont };

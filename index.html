@@ -19,7 +19,9 @@
         <span id="closeoptions" class="closebutton">&times;</span>
         <b>Settings</b>
         <hr>
-        RNG maximum range <input type="number" id="rngval"><br>
+        RNG maximum range <input type="number" id="rngval"><br><br>
+        RNG queue amount <input type="range" id="rngqueue" min="1" max="15"
+            oninput="this.nextElementSibling.value = this.value"><output>5</output><br><br>
         Theme <select id="themeselect">
             <option selected value="classic">Classic</option>
             <option value="light">Light</option>
@@ -52,9 +54,11 @@
         The Output boxes display the following:
         <ul>
             <li><b>Parsed FMC term</b> - The parsed tree form of the current FMC term.</li>
-            <li><b>Machine steps</b> - The sequence of FMC terms processed by the machine, and exit status if completed.</li>
+            <li><b>Machine steps</b> - The sequence of FMC terms processed by the machine, and exit status if completed.
+            </li>
             <li><b>I/O</b> - Outputs from the machine in sequence.</li>
-            <li><b>Continuation</b> - The current state of the continuation stack, with the lowest term being the top of the stack.</li>
+            <li><b>Continuation</b> - The current state of the continuation stack, with the lowest term being the top of
+                the stack.</li>
             <li><b>Stacks</b> - The current state of the location stacks, with the end being the top of each stack.</li>
         </ul>
     </div>
@@ -138,7 +142,7 @@
         </div>
     </div>
 
-    
+
 
     <script src="jquery-3.7.1.js"></script>
     <script src="tree.js"></script>
