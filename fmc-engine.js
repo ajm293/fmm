@@ -194,9 +194,7 @@ function run(input) {
     }
     running = true;
     while (typeof state != "string") {
-        //console.log(state.m.toTerm());
         if (waitingForInput) {
-            console.log("breaking");
             return;
         }
         state = step(state);
@@ -205,7 +203,6 @@ function run(input) {
         }
         updatePanes(state);
     }
-    //console.log(state);
     document.getElementById("console").value += (`${state}\n`);
     running = false;
 }
@@ -222,7 +219,6 @@ function step(state) {
     switch (true) {
         case m instanceof A:
             if (m.loc == 'out') {
-                //console.log("<< " + m.pushTerm.toString());
                 document.getElementById("output").value += (`<< ${m.pushTerm.toTerm()}\n`);
                 m0[m.loc].stack.push(m.pushTerm);
                 return { m0: m0, m: m.term, c: c };
@@ -237,13 +233,11 @@ function step(state) {
                 return { m0: m0, m: sub(m.variable, new J(rand), m.term), c: c };
             } else if (m.loc == 'in') {
                 if (inputReceived === false) {
-                    console.log("Breaking for input");
                     waitingForInput = true;
                     savedState = state;
                     showInput();
                     return { m0: m0, m: m, c: c }
                 } else {
-                    console.log("Returning for input " + inputReceived);
                     let newState = { m0: m0, m: sub(m.variable, new J(inputReceived), m.term), c: c }
                     waitingForInput = false;
                     inputReceived = false;
@@ -318,7 +312,6 @@ function init(input) {
     for (let i = 0; i < locs.length; i++) {
         locations[locs[i]] = new Loc(locs[i]);
         if (locs[i] == "rnd") {
-            console.log(RNG_QUEUE);
             for (let j = 0; j < RNG_QUEUE; j++) {
                 locations[locs[i]].stack.push(new J(Math.floor(Math.random() * NUM_RANGE)));
             }
