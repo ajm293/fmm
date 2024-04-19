@@ -230,7 +230,7 @@ function step(state) {
             if (m.loc == 'rnd') {
                 m0['rnd'].stack.unshift(new J(Math.floor(Math.random() * NUM_RANGE)));
                 let rand = m0['rnd'].stack.pop();
-                return { m0: m0, m: sub(m.variable, new J(rand), m.term), c: c };
+                return { m0: m0, m: sub(m.variable, rand, m.term), c: c };
             } else if (m.loc == 'in') {
                 if (inputReceived === false) {
                     waitingForInput = true;
@@ -245,7 +245,7 @@ function step(state) {
                 }
             } else {
                 let popped = m0[m.loc].stack.pop();
-                if (typeof popped == "undefined") return "Error: empty pop at " + m.loc;
+                if (typeof popped == "undefined") return "Error: empty pop at " + (m.loc == "" ? "\u03BB" : m.loc);
                 return { m0: m0, m: sub(m.variable, popped, m.term), c: c };
             }
         case m instanceof J:
