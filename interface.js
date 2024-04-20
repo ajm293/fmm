@@ -218,6 +218,7 @@ function updatePanes(s) {
     $("#cont").val(showCont(s.c));
     $("#console").scrollTop($("#console")[0].scrollHeight);
     $("#output").scrollTop($("#output")[0].scrollHeight);
+    $("#parsed").val(s.m.toString());
 }
 
 /**
