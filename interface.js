@@ -1,3 +1,7 @@
+// This software uses the jQuery library, which is
+// licensed under the MIT License.
+// See http://www.opensource.org/licenses/mit-license for details.
+
 "use strict";
 
 var state;
