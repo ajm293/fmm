@@ -210,11 +210,15 @@ function run(input) {
         }
         document.getElementById("console").value += (`${state}\n`);
     }
-    if (waitingForInput === false) running = false;
+    if (waitingForInput === false) {
+        console.log("run-directed end");
+        running = false;
+    }
 }
 
 function innerRun(state) {
     if (waitingForInput) {
+        running = true;
         return;
     }
     state = step(state);
