@@ -216,6 +216,12 @@ function run(input) {
     }
 }
 
+/**
+ * Part of the experimental run feature.
+ * Runs a program while also giving time for the browser window to update.
+ * @param {State} state 
+ * @returns 
+ */
 function innerRun(state) {
     if (waitingForInput) {
         running = true;
