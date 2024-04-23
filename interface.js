@@ -238,7 +238,7 @@ function showStacks(m0) {
         } else {
             output += stack
         }
-        output += `: ${m0[stack].stack}\n\n`
+        output += `: ${m0[stack].stack.join(', ')}\n\n`
     }
     return output;
 }
