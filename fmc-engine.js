@@ -292,7 +292,7 @@ function step(state) {
                         return "Error: Unimplemented operator " + m.value;
                 }
             } catch (e) {
-                return "Error: failed to pop two integers for operation";
+                return "Error: failed to pop two integers for operation " + m.value;
             }
 
     }
@@ -315,7 +315,7 @@ function init(input) {
             for (let j = 0; j < RNG_QUEUE; j++) {
                 locations[locs[i]].stack.push(new J(Math.floor(Math.random() * NUM_RANGE)));
             }
-        } else {
+        } else if (locs[i] != "") {
             locations[locs[i]].stack.push(new J(""));
         }
     }
