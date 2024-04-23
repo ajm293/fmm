@@ -4,6 +4,8 @@
 var NUM_RANGE = 100;
 var RNG_QUEUE = 5;
 
+var EXPERIMENTAL_RUN = false;
+
 var inputReceived = false;
 var waitingForInput = false;
 var savedState = undefined;
@@ -193,18 +195,38 @@ function run(input) {
         state = savedState;
     }
     running = true;
-    while (typeof state != "string") {
-        if (waitingForInput) {
-            return;
+    if (EXPERIMENTAL_RUN) {
+        innerRun(state);
+    } else {
+        while (typeof state != "string") {
+            if (waitingForInput) {
+                return;
+            }
+            state = step(state);
+            if (typeof state === "string") {
+                break;
+            }
+            updatePanes(state);
         }
-        state = step(state);
-        if (typeof state === "string") {
-            break;
-        }
-        updatePanes(state);
+        document.getElementById("console").value += (`${state}\n`);
     }
-    document.getElementById("console").value += (`${state}\n`);
-    running = false;
+    if (waitingForInput === false) running = false;
+}
+
+function innerRun(state) {
+    if (waitingForInput) {
+        return;
+    }
+    state = step(state);
+    if (typeof state === "string") {
+        document.getElementById("console").value += (`${state}\n`);
+        return;
+    } else {
+        setTimeout(function() {
+            updatePanes(state);
+            innerRun(state);
+        }, 50);
+    }
 }
 
 /**
