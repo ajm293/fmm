@@ -117,7 +117,6 @@ $(document).ready(function () {
     });
 
     $("#rngqueue").on("change", function () {
-        console.log($("#rngqueue").val());
         RNG_QUEUE = $("#rngqueue").val();
     })
 
