@@ -250,9 +250,9 @@ function showStacks(m0) {
  */
 function showCont(c) {
     output = "";
-    for (let cont in c) {
-        if (c[cont].jmp === '') output += `*`; else output += `${c[cont].jmp}`;
-        output += ` -> ${c[cont].term.toTerm()}\n\n`;
+    for (let i = c.length-1; i >= 0; i--) {
+        if (c[i].jmp === '') output += `*`; else output += `${c[i].jmp}`;
+        output += ` -> ${c[i].term.toTerm()}\n\n`;
     }
     return output;
 }
