@@ -108,7 +108,6 @@ $(document).ready(function () {
 
     $("#rngval").on("change", function () {
         let input = $("#rngval").val();
-        console.log(input);
         if (input !== "") {
             NUM_RANGE = input;
         } else {
