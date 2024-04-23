@@ -226,7 +226,7 @@ function updatePanes(s) {
 }
 
 /**
- * Generate a formatted string containing the contents of the location stacks
+ * Generates a formatted string containing the contents of the location stacks
  * @param {Object} m0 
  * @returns The formatted stack contents string
  */
@@ -244,7 +244,7 @@ function showStacks(m0) {
 }
 
 /**
- * Generate a formatted string containing the contents of the continuation stack
+ * Generates a formatted string containing the contents of the continuation stack
  * @param {*} c 
  * @returns The formatted continuation stack string
  */
@@ -258,7 +258,7 @@ function showCont(c) {
 }
 
 /**
- * Show a custom modal alert window to the user
+ * Shows a custom modal alert window to the user
  * @param {*} text 
  * @param {*} style 
  */
@@ -282,7 +282,7 @@ function throwAlert(text, style = "warning") {
 }
 
 /**
- * Show the input window to the user
+ * Shows the input window to the user
  */
 function showInput() {
     $("#input-text").val('');
@@ -292,7 +292,7 @@ function showInput() {
 }
 
 /**
- * Change the UI theme to the requested theme
+ * Changes the UI theme to the requested theme
  * @param {*} theme 
  */
 function changeTheme(theme = "classic") {
@@ -360,7 +360,7 @@ function changeTheme(theme = "classic") {
 }
 
 /**
- * Update the machine state indicator to the input string
+ * Updates the machine state indicator to the input string
  * @param {*} stateString 
  */
 function changeState(stateString) {
