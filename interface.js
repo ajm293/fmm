@@ -22,6 +22,7 @@ $(document).ready(function () {
     $("#themeselect").val('classic');
     $("#rngval").val(NUM_RANGE);
     $("#rngqueue").val(RNG_QUEUE);
+    $("#exprun").prop("checked", false);
 
     $("#parse").click(function () {
         var term = $("#term").val();
@@ -118,6 +119,14 @@ $(document).ready(function () {
 
     $("#rngqueue").on("change", function () {
         RNG_QUEUE = $("#rngqueue").val();
+    })
+
+    $("#exprun").on("change", function () {
+        if ($("#exprun").is(":checked")) {
+            EXPERIMENTAL_RUN = true;
+        } else {
+            EXPERIMENTAL_RUN = false;
+        }
     })
 
     $("#submit-input").click(function () {
