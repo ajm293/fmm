@@ -198,9 +198,6 @@ function uiRun() {
     running = true;
     run(term);
     changeState("Idle");
-    if (waitingForInput === false) {
-        running = false;
-    }
 
     $("#console").scrollTop($("#console")[0].scrollHeight);
     $("#output").scrollTop($("#output")[0].scrollHeight);
