@@ -121,6 +121,7 @@ input[type=button]:active {
     color: black;
     text-align: left;
     font-family: 'Courier New', Courier, monospace;
+    font-size:1vw;
     background: lightblue;
     padding: 20px;
     position: fixed;
@@ -128,7 +129,8 @@ input[type=button]:active {
     left: 50%;
     z-index: 2;
     border-radius: 10px;
-    max-width: 55%;
+    width: 70%;
+    max-height: 100%;
     transform: translate(-50%, -50%);
 }
 
