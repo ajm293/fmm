@@ -30,7 +30,7 @@ $(document).ready(function () {
             throwAlert("FMC term is empty.");
             return;
         }
-        $("#parsed").val(parse(tokenise(term)).toString());
+        $("#parsed").val(parse(tokenise(term)).toTerm());
     });
 
     $("#run").click(function () {
@@ -158,7 +158,7 @@ function uiStep() {
         state = init(term);
         changeState("Stepping");
         stepping = true;
-        $("#parsed").val(parse(tokenise(term)).toString());
+        $("#parsed").val(parse(tokenise(term)).toTerm());
         $("#console").val('');
         $("#output").val('');
 
@@ -192,7 +192,7 @@ function uiRun() {
     $("#output").val('');
     $("#cont").val('');
     $("#stacks").val('');
-    $("#parsed").val(parse(tokenise(term)).toString());
+    $("#parsed").val(parse(tokenise(term)).toTerm());
 
     changeState("Running");
     running = true;
@@ -220,13 +220,13 @@ function resetPanes() {
  */
 function updatePanes(s) {
     if (waitingForInput === false) {
-        $("#console").val($("#console").val() + `${s.m.toTerm()}\n\n`);
+        $("#console").val($("#console").val() + `${s.m.toString()}\n\n`);
     }
     $("#stacks").val(showStacks(s.m0));
     $("#cont").val(showCont(s.c));
     $("#console").scrollTop($("#console")[0].scrollHeight);
     $("#output").scrollTop($("#output")[0].scrollHeight);
-    $("#parsed").val(s.m.toString());
+    $("#parsed").val(s.m.toTerm());
 }
 
 /**
@@ -256,7 +256,7 @@ function showCont(c) {
     output = "";
     for (let i = c.length-1; i >= 0; i--) {
         if (c[i].jmp === '') output += `*`; else output += `${c[i].jmp}`;
-        output += ` -> ${c[i].term.toTerm()}\n\n`;
+        output += ` -> ${c[i].term.toString()}\n\n`;
     }
     return output;
 }

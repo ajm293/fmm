@@ -5,11 +5,11 @@ class V { // variable (terminal)
         this.value = value;
     }
 
-    toString(indent=0) {
+    toTerm(indent=0) {
         return (`${"  ".repeat(indent)}V(${this.value})`);
     }
 
-    toTerm() {
+    toString() {
         return this.value;
     }
 }
@@ -21,14 +21,14 @@ class L { // pop action (lambda-abstraction)
         this.term = term;
     }
 
-    toString(indent=0) {
+    toTerm(indent=0) {
         let loc = this.loc;
         if (loc === '') loc = '\u03BB';
-        return (`${"  ".repeat(indent)}L(${loc}, ${this.variable},\n${this.term.toString(indent+1)})`);
+        return (`${"  ".repeat(indent)}L(${loc}, ${this.variable},\n${this.term.toTerm(indent+1)})`);
     }
 
-    toTerm() {
-        return `${this.loc}<${this.variable}>.${this.term.toTerm()}`;
+    toString() {
+        return `${this.loc}<${this.variable}>.${this.term.toString()}`;
     }
 }
 
@@ -39,14 +39,14 @@ class A { // push action (application)
         this.term = term;
     }
 
-    toString(indent=0) {
+    toTerm(indent=0) {
         let loc = this.loc;
         if (loc === '') loc = '\u03BB';
-        return (`${"  ".repeat(indent)}A(${loc},\n${this.pushTerm.toString(indent+1)},\n${this.term.toString(indent+1)})`);
+        return (`${"  ".repeat(indent)}A(${loc},\n${this.pushTerm.toTerm(indent+1)},\n${this.term.toTerm(indent+1)})`);
     }
 
-    toTerm() {
-        return `[${this.pushTerm.toTerm()}]${this.loc}.${this.term.toTerm()}`;
+    toString() {
+        return `[${this.pushTerm.toString()}]${this.loc}.${this.term.toString()}`;
     }
 }
 
@@ -55,13 +55,13 @@ class J { // jump (terminal)
         this.value = value;
     }
 
-    toString(indent=0) {
+    toTerm(indent=0) {
         let value = this.value;
         if (value === '') value = '*';
         return (`${"  ".repeat(indent)}J(${value})`);
     }
 
-    toTerm() {
+    toString() {
         if (this.value === '') return "*";
         return this.value;
     }
@@ -74,17 +74,17 @@ class S { // jump action (sequence)
         this.rTerm = rTerm;
     }
 
-    toString(indent=0) {
+    toTerm(indent=0) {
         let jmp = this.jmp;
         if (jmp === '') jmp = '*'
         return (`${"  ".repeat(indent)}`
-        +`S(\n${this.lTerm.toString(indent+1)},\n`
-        +`${"  ".repeat(indent+1)}${jmp},\n${this.rTerm.toString(indent+1)})`);
+        +`S(\n${this.lTerm.toTerm(indent+1)},\n`
+        +`${"  ".repeat(indent+1)}${jmp},\n${this.rTerm.toTerm(indent+1)})`);
     }
 
-    toTerm() {
-        if (this.jmp === '') return `${this.lTerm.toTerm()};${this.rTerm.toTerm()}`;
-        return `${this.lTerm.toTerm()};${this.jmp}->${this.rTerm.toTerm()}`;
+    toString() {
+        if (this.jmp === '') return `${this.lTerm.toString()};${this.rTerm.toString()}`;
+        return `${this.lTerm.toString()};${this.jmp}->${this.rTerm.toString()}`;
     }
 }
 
@@ -94,16 +94,16 @@ class R { // loop (recurse)
         this.jmp = jmp;
     }
 
-    toString(indent=0) {
+    toTerm(indent=0) {
         let jmp = this.jmp;
         if (jmp === '') jmp = '*';
         return (`${"  ".repeat(indent)}`
-        +`R(\n${this.term.toString(indent+1)},\n${"  ".repeat(indent+1)}${jmp})`);
+        +`R(\n${this.term.toTerm(indent+1)},\n${"  ".repeat(indent+1)}${jmp})`);
     }
 
-    toTerm() {
-        if (this.jmp === '') return `(${this.term.toTerm()})^*${this.jmp}`
-        return `(${this.term.toTerm()})^${this.jmp}`;
+    toString() {
+        if (this.jmp === '') return `(${this.term.toString()})^*${this.jmp}`
+        return `(${this.term.toString()})^${this.jmp}`;
     }
 }
 
