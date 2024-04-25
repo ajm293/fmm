@@ -195,6 +195,7 @@ function run(input) {
         state = savedState;
     }
     running = true;
+    changeState("Running");
     if (EXPERIMENTAL_RUN) {
         innerRun(state);
     } else {
@@ -212,6 +213,7 @@ function run(input) {
     }
     if (waitingForInput === false) {
         running = false;
+        changeState("Idle");
     }
 }
 

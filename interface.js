@@ -197,7 +197,6 @@ function uiRun() {
     changeState("Running");
     running = true;
     run(term);
-    changeState("Idle");
 
     $("#console").scrollTop($("#console")[0].scrollHeight);
     $("#output").scrollTop($("#output")[0].scrollHeight);
