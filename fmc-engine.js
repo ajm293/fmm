@@ -1,7 +1,7 @@
 "use strict";
 
 
-var NUM_RANGE = 100;
+var RNG_RANGE = 100;
 var RNG_QUEUE = 5;
 
 var EXPERIMENTAL_RUN = false;
@@ -261,7 +261,7 @@ function step(state) {
             }
         case m instanceof L:
             if (m.loc == 'rnd') {
-                m0['rnd'].stack.unshift(new J(Math.floor(Math.random() * NUM_RANGE)));
+                m0['rnd'].stack.unshift(new J(Math.floor(Math.random() * RNG_RANGE)));
                 let rand = m0['rnd'].stack.pop();
                 return { m0: m0, m: sub(m.variable, rand, m.term), c: c };
             } else if (m.loc == 'in') {
@@ -346,7 +346,7 @@ function init(input) {
         locations[locs[i]] = new Loc(locs[i]);
         if (locs[i] == "rnd") {
             for (let j = 0; j < RNG_QUEUE; j++) {
-                locations[locs[i]].stack.push(new J(Math.floor(Math.random() * NUM_RANGE)));
+                locations[locs[i]].stack.push(new J(Math.floor(Math.random() * RNG_RANGE)));
             }
         } else if (locs[i] != "") {
             locations[locs[i]].stack.push(new J(""));

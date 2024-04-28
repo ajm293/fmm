@@ -20,7 +20,7 @@ $(document).ready(function () {
     $("#cont").val('');
     $("#stacks").val('');
     $("#themeselect").val('classic');
-    $("#rngval").val(NUM_RANGE);
+    $("#rngval").val(RNG_RANGE);
     $("#rngqueue").val(RNG_QUEUE);
     $("#exprun").prop("checked", false);
 
@@ -109,10 +109,10 @@ $(document).ready(function () {
     $("#rngval").on("change", function () {
         let input = $("#rngval").val();
         if (input !== "") {
-            NUM_RANGE = input;
+            RNG_RANGE = input;
         } else {
             throwAlert("RNG range must be a number.", "error");
-            $("#rngval").val(NUM_RANGE);
+            $("#rngval").val(RNG_RANGE);
         }
     });
 
