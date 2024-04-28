@@ -42,7 +42,7 @@
         </ul>
         FMC terms can be typed directly into the 'FMC term' box
         in Controls, or uploaded from a .fmc or .txt file using the
-        'Browse' button. The remaining buttons can be used to control
+        'Upload...' button. The remaining buttons can be used to control
         the machine:
         <ul>
             <li><b>Parse</b> - Display the parsed AST form of the FMC term.</li>
@@ -103,7 +103,8 @@
             </div>
 
             <div class="control">
-                <input id="upload" type="file" accept=".fmc,.txt" title="Upload FMC term file">
+                <input id="upload" type="file" accept=".fmc,.txt" hidden>
+                <label id="up-btn" for="upload" title="Upload FMC term file">Upload...</label>
             </div>
 
             <div class="control">
@@ -124,7 +125,7 @@
                 <input type="button" id="help" value="?" title="Help">
             </div>
 
-            <div id="running" style="float:right;justify-content:right">
+            <div id="running" style="float:right;justify-content:right;flex: 0 1 auto;">
                 Idle
             </div>
 

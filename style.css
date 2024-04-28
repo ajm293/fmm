@@ -253,7 +253,7 @@ input[type=button]:active {
     flex: 0 1 auto;
     display: flex;
     flex-flow: row wrap;
-    max-width: 30%;
+    max-width: 33%;
     min-height: 100%;
     margin: 0px 10px 0px 0px;
 }
@@ -265,6 +265,27 @@ input[type=button]:active {
     min-width: 100%;
     font-weight: bold;
 
+}
+
+#up-btn {
+    background: rgb(240, 240, 240);
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 1.5em;
+    padding: 5px 10px;
+    margin: 2px 5px;
+    border: solid;
+    border-radius: 10px;
+    height: 1.6em;
+}
+
+#up-btn:hover {
+    background: lightgray !important;
+}
+
+#up-btn:active {
+    background: silver !important;
 }
 
 #resetall:hover {
