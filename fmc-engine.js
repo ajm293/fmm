@@ -489,7 +489,6 @@ function sub(variable, p, q) {
             if (q.variable == variable) {
                 return q;
             } else if (free(p).indexOf(q.variable) != -1) {
-                // TODO: Implement fresh variables (De Bruijn indexing ideally)
                 var z = fresh(merge([variable], merge(used(p), used(q.term))));
                 return new L(q.loc, z, sub(variable, p, sub(q.variable, new V(z), q.term)));
             } else {

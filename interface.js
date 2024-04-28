@@ -234,7 +234,7 @@ function updatePanes(s) {
  * @returns The formatted stack contents string
  */
 function showStacks(m0) {
-    output = "";
+    let output = "";
     for (let stack in m0) {
         if (stack == "") {
             output += "\u03BB"
@@ -252,7 +252,7 @@ function showStacks(m0) {
  * @returns The formatted continuation stack string
  */
 function showCont(c) {
-    output = "";
+    let output = "";
     for (let i = c.length-1; i >= 0; i--) {
         if (c[i].jmp === '') output += `*`; else output += `${c[i].jmp}`;
         output += ` -> ${c[i].term.toString()}\n\n`;
