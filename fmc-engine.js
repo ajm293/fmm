@@ -233,7 +233,7 @@ function innerRun(state) {
         document.getElementById("console").value += (`${state}\n`);
         return;
     } else {
-        setTimeout(function() {
+        setTimeout(function () {
             updatePanes(state);
             innerRun(state);
         }, 50);

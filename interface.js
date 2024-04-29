@@ -174,7 +174,7 @@ function uiStep() {
         } else {
             updatePanes(state);
         }
-        
+
     }
 }
 
@@ -253,7 +253,7 @@ function showStacks(m0) {
  */
 function showCont(c) {
     let output = "";
-    for (let i = c.length-1; i >= 0; i--) {
+    for (let i = c.length - 1; i >= 0; i--) {
         if (c[i].jmp === '') output += `*`; else output += `${c[i].jmp}`;
         output += ` -> ${c[i].term.toString()}\n\n`;
     }
