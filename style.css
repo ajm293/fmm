@@ -238,7 +238,6 @@ input[type=button]:active {
 .controls-container {
     display: flex;
     flex-flow: row nowrap;
-    flex-grow: 3;
     justify-content: left;
     align-items: auto;
     align-content: start;
@@ -276,7 +275,7 @@ input[type=button]:active {
     margin: 2px 5px;
     border: solid;
     border-radius: 10px;
-    height: 1.6em;
+    height: 2em;
 }
 
 #up-btn:hover {
