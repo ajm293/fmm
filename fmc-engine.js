@@ -197,6 +197,7 @@ function run(input) {
     running = true;
     changeState("Running");
     if (EXPERIMENTAL_RUN) {
+        machineControlsOff(true);
         innerRun(state);
     } else {
         while (typeof state != "string") {
@@ -233,17 +234,19 @@ function innerRun(state) {
         document.getElementById("console").value += (`${state}\n`);
         changeState("Idle");
         running = false;
+        machineControlsOff(false);
         return;
     } else if (running === false) {
-        document.getElementById("console").value += (`Evaluation interrupted`);
+        document.getElementById("console").value += (`Evaluation interrupted by user`);
         changeState("Idle");
         running = false;
+        machineControlsOff(false);
     }
     else {
         setTimeout(function () {
             updatePanes(state);
             innerRun(state);
-        }, 50);
+        }, 20);
     }
 }
 

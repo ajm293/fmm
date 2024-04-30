@@ -23,6 +23,7 @@ $(document).ready(function () {
     $("#rngval").val(RNG_RANGE);
     $("#rngqueue").val(RNG_QUEUE);
     $("#exprun").prop("checked", false);
+    machineControlsOff(false);
 
     $("#parse").click(function () {
         var term = $("#term").val();
@@ -202,6 +203,10 @@ function uiRun() {
     $("#output").scrollTop($("#output")[0].scrollHeight);
 }
 
+function machineControlsOff(bool){
+    $(".machine-ctrl").prop("disabled", bool);
+}
+
 /**
  * Listens for Ctrl+\ and attempts to stop running
  * if detected.
@@ -210,7 +215,7 @@ var down = {};
 $(document).keydown(function (e) {
     down[e.keyCode] = true;
 }).keyup(function (e) {
-    if (down[17] && down[220] && waitingForInput === false) {
+    if (down[17] && down[220] && waitingForInput === false && running === true) {
         running = false;
         state = undefined;
     }
