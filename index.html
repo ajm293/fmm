@@ -98,7 +98,7 @@
 
         <div class="controls-container">
 
-            <div class="control" style="min-width:20%; max-width: 45%;">
+            <div class="control" style="min-width:20%;">
                 <textarea id="term" placeholder="FMC term" title="FMC term input"></textarea>
             </div>
 
@@ -107,17 +107,17 @@
                 <label id="up-btn" for="upload" title="Upload FMC term file">Upload...</label>
             </div>
 
-            <div class="control" style="max-width: 40%;">
+            <div class="control" style="width: 40%; flex: 1 0 auto;">
 
-                <input type="button" id="parse" value="Parse" title="Parse FMC term">
+                <input type="button" class="machine-ctrl" id="parse" value="Parse" title="Parse FMC term">
 
-                <input type="button" id="run" value="Run" title="Run FMC term">
+                <input type="button" class="machine-ctrl" id="run" value="Run" title="Run FMC term">
 
-                <input type="button" id="step" value="Step" title="Step FMC term">
+                <input type="button" class="machine-ctrl" id="step" value="Step" title="Step FMC term">
 
-                <input type="button" id="reset" value="Reset output" title="Reset output">
+                <input type="button" class="machine-ctrl" id="reset" value="Reset output" title="Reset output">
 
-                <input type="button" id="resetall" value="Reset all" title="Reset all">
+                <input type="button" class="machine-ctrl" id="resetall" value="Reset all" title="Reset all">
             </div>
 
             <div class="control" style="margin:0px;height:100%;justify-content:left;flex-flow: column wrap;">
@@ -125,7 +125,7 @@
                 <input type="button" id="help" value="?" title="Help">
             </div>
 
-            <div id="running" style="float:right;justify-content:right;flex: 0 0 auto;">
+            <div id="running" style="float:right;justify-content:right;flex: 0 0 auto; width:5em">
                 Idle
             </div>
 
