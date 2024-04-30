@@ -211,7 +211,7 @@ function run(input) {
         }
         document.getElementById("console").value += (`${state}\n`);
     }
-    if (waitingForInput === false) {
+    if (waitingForInput === false && EXPERIMENTAL_RUN === false) {
         running = false;
         changeState("Idle");
     }
@@ -231,8 +231,15 @@ function innerRun(state) {
     state = step(state);
     if (typeof state === "string") {
         document.getElementById("console").value += (`${state}\n`);
+        changeState("Idle");
+        running = false;
         return;
-    } else {
+    } else if (running === false) {
+        document.getElementById("console").value += (`Evaluation interrupted`);
+        changeState("Idle");
+        running = false;
+    }
+    else {
         setTimeout(function () {
             updatePanes(state);
             innerRun(state);

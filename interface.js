@@ -203,6 +203,21 @@ function uiRun() {
 }
 
 /**
+ * Listens for Ctrl+\ and attempts to stop running
+ * if detected.
+ */
+var down = {};
+$(document).keydown(function (e) {
+    down[e.keyCode] = true;
+}).keyup(function (e) {
+    if (down[17] && down[220] && waitingForInput === false) {
+        running = false;
+        state = undefined;
+    }
+    down[e.keyCode] = false;
+})
+
+/**
  * Clears the UI output windows
  */
 function resetPanes() {
