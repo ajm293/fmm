@@ -203,7 +203,7 @@ function uiRun() {
     $("#output").scrollTop($("#output")[0].scrollHeight);
 }
 
-function machineControlsOff(bool){
+function machineControlsOff(bool) {
     $(".machine-ctrl").prop("disabled", bool);
 }
 
