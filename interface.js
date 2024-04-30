@@ -357,7 +357,10 @@ function changeTheme(theme = "classic") {
     $("body,html").css("background-color", bgColor);
     $("input[type=button]").css("background-color", buttonColor);
     $("input[type=button]").css("color", btnFontColor);
+    $("#up-btn").css("background-color", buttonColor);
+    $("#up-btn").css("color", btnFontColor)
     $("input").css("border-color", borderColor);
+    $("#up-btn").css("border-color", borderColor);
     $(".pane-container").css("border-bottom-color", borderColor);
     $("textarea").css("border-color", txtBorderColor);
 }
