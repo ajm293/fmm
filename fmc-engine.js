@@ -4,7 +4,7 @@
 var RNG_RANGE = 100;
 var RNG_QUEUE = 5;
 
-var EXPERIMENTAL_RUN = false;
+var ASYNC_RUN = true;
 
 var inputReceived = false;
 var waitingForInput = false;
@@ -196,7 +196,7 @@ function run(input) {
     }
     running = true;
     changeState("Running");
-    if (EXPERIMENTAL_RUN) {
+    if (ASYNC_RUN) {
         machineControlsOff(true);
         innerRun(state);
     } else {
@@ -212,14 +212,14 @@ function run(input) {
         }
         document.getElementById("console").value += (`${state}\n`);
     }
-    if (waitingForInput === false && EXPERIMENTAL_RUN === false) {
+    if (waitingForInput === false && ASYNC_RUN === false) {
         running = false;
         changeState("Idle");
     }
 }
 
 /**
- * Part of the experimental run feature.
+ * Part of the asynchronous run feature.
  * Runs a program while also giving time for the browser window to update.
  * @param {State} state 
  * @returns 

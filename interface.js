@@ -22,7 +22,7 @@ $(document).ready(function () {
     $("#themeselect").val('classic');
     $("#rngval").val(RNG_RANGE);
     $("#rngqueue").val(RNG_QUEUE);
-    $("#exprun").prop("checked", false);
+    $("#exprun").prop("checked", true);
     machineControlsOff(false);
 
     $("#parse").click(function () {
@@ -123,9 +123,9 @@ $(document).ready(function () {
 
     $("#exprun").on("change", function () {
         if ($("#exprun").is(":checked")) {
-            EXPERIMENTAL_RUN = true;
+            ASYNC_RUN = true;
         } else {
-            EXPERIMENTAL_RUN = false;
+            ASYNC_RUN = false;
         }
     })
 
