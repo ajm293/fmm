@@ -1,11 +1,157 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <title>The Functional Machine Simulator</title>
-    </head>
 
-    <body>
-        <script src="fmc-engine.js"></script>
-    </body>
+<head>
+    <title>The Functional Machine Machine</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <div id="haze"></div>
+
+    <div id="alert">
+        <span id="alert-text">Secret test alert text</span>
+        <span id="closealert" class="closebutton">&times;</span>
+    </div>
+
+    <div class="options">
+        <span id="closeoptions" class="closebutton">&times;</span>
+        <b>Settings</b>
+        <hr>
+        RNG maximum range <input type="number" id="rngval"><br><br>
+        RNG queue amount <input type="range" id="rngqueue" min="1" max="15"
+            oninput="this.nextElementSibling.value = this.value"><output>5</output><br><br>
+        Enable asynchronous run mode <input type="checkbox" id="exprun"><br><br>
+        Theme <select id="themeselect">
+            <option selected value="classic">Classic</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="hicontrast">High Contrast</option>
+        </select>
+    </div>
+
+    <div class="help">
+        <span id="closehelp" class="closebutton">&times;</span>
+        <b>Help</b>
+        <hr>
+        The Functional Machine Machine is composed of two parts:
+        <ul>
+            <li><b>Output</b> (top section)</li>
+            <li><b>Controls</b> (bottom section)</li>
+        </ul>
+        Enter an FMC term directly into the 'FMC term' box
+        in Controls, or upload from a .fmc or .txt file using the
+        &#128193; file button. Use the remaining buttons to control
+        the machine:
+        <ul>
+            <li><b>Parse</b> - Display the parsed AST form of the FMC term.</li>
+            <li><b>Run</b> - Evaluate the entire FMC term at once, displaying the program trace and final state.</li>
+            <li><b>Step</b> - Perform a single machine step on the FMC term, displaying trace and state in turn.</li>
+            <li><b>Reset output</b> - Reset outputs and erase the current state of the machine.</li>
+            <li><b>Reset all</b> - Reset the entire machine, erasing the FMC term additionally.</li>
+        </ul>
+        The Gear &#9881 button opens the machine settings, where the page theme and RNG parameters can be
+        changed.<br><br>
+        The Output boxes display the following:
+        <ul>
+            <li><b>Parsed FMC term</b> - The parsed tree form of the current FMC term.</li>
+            <li><b>Machine steps</b> - The sequence of FMC terms processed by the machine, and exit status if completed.
+            </li>
+            <li><b>I/O</b> - Outputs from the machine in sequence.</li>
+            <li><b>Continuation</b> - The current state of the continuation stack, with the top term being the top of
+                the stack.</li>
+            <li><b>Stacks</b> - The current state of the location stacks, with the end being the top of each stack.</li>
+        </ul>
+        Use Ctrl + \ to halt execution when using the asynchronous run mode.
+    </div>
+
+    <div class="input-box">
+        <b>Input</b>
+        <hr>
+        <input type="text" id="input-text" placeholder=">>" autofocus><br>
+        <input type="button" id="submit-input" value="Submit">
+    </div>
+
+    <div class="app-container">
+        <header class="header">
+            FM<sup>2</sup>: The Functional Machine Machine
+        </header>
+
+        <div class="pane-container">
+
+            <div class="pane" id="parse-pane">
+                <textarea readonly id="parsed" placeholder="Parsed FMC term"></textarea>
+            </div>
+            <div class="pane" id="trace-pane">
+                <textarea readonly id="console" placeholder="Machine steps"></textarea>
+            </div>
+            <div class="pane" id="io-pane">
+                <div class="io-cont-container">
+                    <textarea readonly id="output" placeholder="Machine outputs" style="margin-bottom:5px"></textarea>
+                    <textarea readonly id="cont" placeholder="Continuation" style="margin-top:5px"></textarea>
+                </div>
+            </div>
+            <div class="pane" id="stack-pane">
+                <textarea readonly id="stacks" placeholder="Location stacks"></textarea>
+            </div>
+
+        </div>
+
+        <div class="controls-container">
+
+            <div class="control" style="min-width:20%; max-width:40%;">
+                <textarea id="term" placeholder="FMC term" title="FMC term input"></textarea>
+            </div>
+
+            <div class="control">
+                <input id="upload" type="file" accept=".fmc,.txt" hidden>
+                <label id="up-btn" for="upload" title="Upload FMC term file">&#128193;</label>
+            </div>
+
+            <div class="control" style="flex: 1 1 auto;">
+
+                <input type="button" class="machine-ctrl" id="parse" value="Parse" title="Parse FMC term">
+
+                <input type="button" class="machine-ctrl" id="run" value="Run" title="Run FMC term">
+
+                <input type="button" class="machine-ctrl" id="step" value="Step" title="Step FMC term">
+
+                <input type="button" id="reset" value="Reset output" title="Reset output">
+
+                <input type="button" id="resetall" value="Reset all" title="Reset all">
+            </div>
+
+            <div class="control" style="margin:0px;height:100%;justify-content:left;flex-flow: column wrap;">
+                <input type="button" id="settings" value="&#9881" title="Settings">
+                <input type="button" id="help" value="?" title="Help">
+            </div>
+
+            <div id="running" style="float:right;justify-content:right;flex: 0 0 auto; width:5em">
+                Idle
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <footer>
+                <span style="text-align:left;width:50%;display:inline-block;">
+                    The Functional Machine Machine is an FMC project | &#128161
+                </span>
+                <span style="text-align:right;width:49%;display:inline-block;">
+                    <i>'Pushing to a location near you.'</i>
+                    <span id="closefooter" class="closebutton">&times;</span>
+                </span>
+            </footer>
+        </div>
+    </div>
+
+
+
+    <script src="jquery-3.7.1.js"></script>
+    <script src="tree.js"></script>
+    <script src="fmc-engine.js"></script>
+    <script src="interface.js"></script>
+</body>
+
 </html>
