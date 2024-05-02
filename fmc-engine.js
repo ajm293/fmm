@@ -29,17 +29,21 @@ function parse(tokenStream) {
     return result;
 
     function down(trace) {
-        if (lookAhead() == '\0') { // down xs [] = up xs (J "") []
+        // down xs [] = up xs (J "") []
+        if (lookAhead() == '\0') {
             return up(trace, new J(""));
         }
         let sym = nextToken();
-        if (sym == '(') { // down xs ("(":ys) = down (P0:xs) ys
+        // down xs ("(":ys) = down (P0:xs) ys
+        if (sym == '(') {
             return down([new P0()].concat(trace));
         }
-        if (sym == '[') { // down xs ("[":ys) = down (A0:xs) ys
+        // down xs ("[":ys) = down (A0:xs) ys
+        if (sym == '[') {
             return down([new A0()].concat(trace));
         }
-        if (sym == '<') { // down xs ("<":x:">":ys) = straight (L0 "" x:xs) ys
+        // down xs ("<":x:">":ys) = straight (L0 "" x:xs) ys
+        if (sym == '<') {
             let x = nextToken();
             if (alphanum.test(x)) {
                 if (nextToken() == '>') {
@@ -48,7 +52,8 @@ function parse(tokenStream) {
             }
         }
         let l = lookAhead();
-        if (l == '<') { // down xs (a:"<":x:">":ys) = straight (L0  a x:xs) ys
+        // down xs (a:"<":x:">":ys) = straight (L0  a x:xs) ys
+        if (l == '<') {
             nextToken();
             let x = nextToken();
             if (alphanum.test(x)) {
@@ -57,14 +62,17 @@ function parse(tokenStream) {
                 }
             }
         }
-        if ([')', ']', ';'].includes(sym)) { // down xs (x:ys) | closing x = up xs (J "") (x:ys)
+        // down xs (x:ys) | closing x = up xs (J "") (x:ys)
+        if ([')', ']', ';'].includes(sym)) {
             index = index - 1;
             return up(trace, new J(""));
         }
-        if (/[A-Z]/.test(sym) || digit.test(sym)) { // down xs (x:ys) | isjump  x = up xs (J x) ys
+        // down xs (x:ys) | isjump  x = up xs (J x) ys
+        if (/[A-Z]/.test(sym) || digit.test(sym)) {
             return up(trace, new J(sym));
         }
-        else { // down xs (x:ys) | otherwise = up xs (V x) ys
+        // down xs (x:ys) | otherwise = up xs (V x) ys
+        else {
             return up(trace, new V(sym));
         }
     }
@@ -94,23 +102,24 @@ function parse(tokenStream) {
     }
 
     function up(trace, m) {
-        if (trace.length == 0 && lookAhead() == '\0') { // up [] m [] = m
+        // up [] m [] = m
+        if (trace.length == 0 && lookAhead() == '\0') {
             return m;
         }
 
         let head = trace[0];
-
-        if ((head instanceof P0) && (lookAhead() == ')')) { // up (P0:xs) m (")":ys) = up xs m ys
+        // up (P0:xs) m (")":ys) = up xs m ys
+        if ((head instanceof P0) && (lookAhead() == ')')) {
             nextToken();
             return up(trace.slice(1), m);
         }
-
-        if ((head instanceof A0) && (lookAhead() == ']') && (lookAhead(1) == '\0')) { // up (A0:xs) m ("]":[]) = up xs (A "" m (J "")) []
+        // up (A0:xs) m ("]":[]) = up xs (A "" m (J "")) []
+        if ((head instanceof A0) && (lookAhead() == ']') && (lookAhead(1) == '\0')) {
             nextToken();
             return up(trace.slice(1), new A("", m, new J("")));
         }
-
-        if ((head instanceof A0) && (lookAhead() == ']') && (lookAhead(1) != '\0')) { // up (A0:xs) m ("]":a:ys)
+        // up (A0:xs) m ("]":a:ys)
+        if ((head instanceof A0) && (lookAhead() == ']') && (lookAhead(1) != '\0')) {
             if (/[a-z]+$/.test(lookAhead(1))) { // | isloc a = straight (A1 a m:xs) ys
                 nextToken();
                 let sym2 = nextToken();
@@ -120,40 +129,41 @@ function parse(tokenStream) {
                 return straight([new A1("", m)].concat(trace.slice(1)));
             }
         }
-
-        if (lookAhead() == '*') { // up xs m ("*":ys) = up xs (R m "") ys
+        // up xs m ("*":ys) = up xs (R m "") ys
+        if (lookAhead() == '*') {
             nextToken();
             return up(trace, new R(m, ""));
         }
-
-        if (lookAhead() == '^' && lookAhead(1) != '\0') { // up xs m ("^":j:ys) = up xs (R m j) ys
+        // up xs m ("^":j:ys) = up xs (R m j) ys
+        if (lookAhead() == '^' && lookAhead(1) != '\0') {
             nextToken();
             let sym2 = nextToken();
             return up(trace, new R(m, sym2));
         }
-
-        if (head instanceof A1) { // up (A1 a n:xs) m ys = up xs (A a n m) ys
+        // up (A1 a n:xs) m ys = up xs (A a n m) ys
+        if (head instanceof A1) {
             return up(trace.slice(1), new A(head.loc, head.term, m));
         }
-
-        if (head instanceof L0) { // up (L0 a x:xs) m ys = up xs (L a x m) ys
+        // up (L0 a x:xs) m ys = up xs (L a x m) ys
+        if (head instanceof L0) {
             return up(trace.slice(1), new L(head.loc, head.variable, m));
         }
-
-        if (head instanceof S1) { // up (S1 n j:xs) m ys = up xs (S n j m) ys
+        // up (S1 n j:xs) m ys = up xs (S n j m) ys
+        if (head instanceof S1) {
             return up(trace.slice(1), new S(head.term, head.jump, m));
         }
 
         let sym = nextToken();
-
-        if (sym == ';' && lookAhead(1) != '->') { // up xs m (";":ys) = down (S1 m "":xs) ys
+        // up xs m (";":ys) = down (S1 m "":xs) ys
+        if (sym == ';' && lookAhead(1) != '->') {
             return down([new S1(m, "")].concat(trace));
         }
 
         let sym2 = nextToken();
 
         let sym3 = nextToken();
-        if (sym == ';' && sym3 == '->') { // up xs m (";":j:"->":ys) = down (S1 m j :xs) ys
+        // up xs m (";":j:"->":ys) = down (S1 m j :xs) ys
+        if (sym == ';' && sym3 == '->') {
             return down([new S1(m, sym2)].concat(trace));
         }
 
@@ -286,7 +296,9 @@ function step(state) {
                 }
             } else {
                 let popped = m0[m.loc].stack.pop();
-                if (typeof popped == "undefined") return "Error: empty pop at " + (m.loc == "" ? "\u03BB" : m.loc);
+                if (typeof popped == "undefined") {
+                    return "Error: empty pop at " + (m.loc == "" ? "\u03BB" : m.loc);
+                }
                 return { m0: m0, m: sub(m.variable, popped, m.term), c: c };
             }
         case m instanceof J:
