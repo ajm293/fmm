@@ -5,7 +5,7 @@ class V { // variable (terminal)
         this.value = value;
     }
 
-    toTerm(indent=0) {
+    toTerm(indent = 0) {
         return (`${"  ".repeat(indent)}V(${this.value})`);
     }
 
@@ -21,10 +21,10 @@ class L { // pop action (lambda-abstraction)
         this.term = term;
     }
 
-    toTerm(indent=0) {
+    toTerm(indent = 0) {
         let loc = this.loc;
         if (loc === '') loc = '\u03BB';
-        return (`${"  ".repeat(indent)}L(${loc}, ${this.variable},\n${this.term.toTerm(indent+1)})`);
+        return (`${"  ".repeat(indent)}L(${loc}, ${this.variable},\n${this.term.toTerm(indent + 1)})`);
     }
 
     toString() {
@@ -39,10 +39,10 @@ class A { // push action (application)
         this.term = term;
     }
 
-    toTerm(indent=0) {
+    toTerm(indent = 0) {
         let loc = this.loc;
         if (loc === '') loc = '\u03BB';
-        return (`${"  ".repeat(indent)}A(${loc},\n${this.pushTerm.toTerm(indent+1)},\n${this.term.toTerm(indent+1)})`);
+        return (`${"  ".repeat(indent)}A(${loc},\n${this.pushTerm.toTerm(indent + 1)},\n${this.term.toTerm(indent + 1)})`);
     }
 
     toString() {
@@ -55,7 +55,7 @@ class J { // jump (terminal)
         this.value = value;
     }
 
-    toTerm(indent=0) {
+    toTerm(indent = 0) {
         let value = this.value;
         if (value === '') value = '*';
         return (`${"  ".repeat(indent)}J(${value})`);
@@ -68,18 +68,18 @@ class J { // jump (terminal)
 }
 
 class S { // jump action (sequence)
-    constructor(lTerm ,jmp, rTerm) {
+    constructor(lTerm, jmp, rTerm) {
         this.lTerm = lTerm;
         this.jmp = jmp;
         this.rTerm = rTerm;
     }
 
-    toTerm(indent=0) {
+    toTerm(indent = 0) {
         let jmp = this.jmp;
         if (jmp === '') jmp = '*'
         return (`${"  ".repeat(indent)}`
-        +`S(\n${this.lTerm.toTerm(indent+1)},\n`
-        +`${"  ".repeat(indent+1)}${jmp},\n${this.rTerm.toTerm(indent+1)})`);
+            + `S(\n${this.lTerm.toTerm(indent + 1)},\n`
+            + `${"  ".repeat(indent + 1)}${jmp},\n${this.rTerm.toTerm(indent + 1)})`);
     }
 
     toString() {
@@ -94,11 +94,11 @@ class R { // loop (recurse)
         this.jmp = jmp;
     }
 
-    toTerm(indent=0) {
+    toTerm(indent = 0) {
         let jmp = this.jmp;
         if (jmp === '') jmp = '*';
         return (`${"  ".repeat(indent)}`
-        +`R(\n${this.term.toTerm(indent+1)},\n${"  ".repeat(indent+1)}${jmp})`);
+            + `R(\n${this.term.toTerm(indent + 1)},\n${"  ".repeat(indent + 1)}${jmp})`);
     }
 
     toString() {
