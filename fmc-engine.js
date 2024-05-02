@@ -13,8 +13,6 @@ var savedState = undefined;
 const separator = /\(|\)|\.|\[|\]|\;/;
 const alphanum = /[a-z0-9]|_/i;
 const digit = /^\d+$/;
-const varID = /[a-z]+$/;
-const jmpID = /[A-Z][A-Za-z]+$/;
 
 const operators = ["+", "-", "*", "/", "<=", ">=", "=="];
 
