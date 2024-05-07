@@ -1,5 +1,7 @@
 # FMM - A Web-based interactive visualiser for the Functional Machine Language with Choice
 
+![fmm banner](fmm-banner.png)
+
 ### Features
 
 - Interactive visualisation of untyped FMC terms
